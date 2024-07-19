@@ -1,64 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Presa : MonoBehaviour
 {
-
     public float velocidade = 5f;
     public float distanciaConsumo = 1f;
-    private Transform gramaAlvo;
+    public Transform gramaAlvo;
+    private NavMeshAgent agent;
 
     // Start is called before the first frame update
     void Start()
     {
-        BuscaGramaProxima();        
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;      
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gramaAlvo == null)
+        if (gramaAlvo != null)
         {
-            BuscaGramaProxima();
-        }
-        else
-        {
-            LocomoveAteGramaProxima();
-        }
-    }
+            agent.SetDestination(gramaAlvo.position);
 
-    void BuscaGramaProxima()
-    {
-        GameObject[] grassObjects = GameObject.FindGameObjectsWithTag("Grama");
-        if (grassObjects.Length > 0)
-        {
-            int randomIndex = Random.Range(0, grassObjects.Length);
-            gramaAlvo = grassObjects[randomIndex].transform;
-        }
-        else
-        {
-            gramaAlvo = null;  // Se não houver mais grama, não há alvo
+            // Verifica a distância entre o agente e o alvo
+            float distanciaParaGrama = Vector2.Distance(transform.position, gramaAlvo.position);
+            if (distanciaParaGrama <= distanciaConsumo)
+            {
+                ConsumirGrama();
+            }
         }
     }
 
-    void LocomoveAteGramaProxima()
+    private void OnTriggerEnter2D(Collider2D colider)
     {
-        Vector3 direction = (gramaAlvo.position - transform.position).normalized;
-        transform.position += direction * velocidade * Time.deltaTime;
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-
-        if (Vector3.Distance(transform.position, gramaAlvo.position) <= distanciaConsumo)
+        if (colider.CompareTag("Grama"))
         {
-            ConsumirGrama();
+            gramaAlvo = colider.transform;
         }
     }
 
     void ConsumirGrama()
     {
-        Destroy(gramaAlvo.gameObject);  // Destrói o objeto da grama
-        BuscaGramaProxima();  // Procura um novo alvo
+        if (gramaAlvo != null)
+        {
+            Debug.Log("Destruindo grama: " + gramaAlvo.name);
+            Destroy(gramaAlvo.gameObject);
+            gramaAlvo = null;
+        }
     }
 }
+
