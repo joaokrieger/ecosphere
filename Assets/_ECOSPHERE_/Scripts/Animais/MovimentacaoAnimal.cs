@@ -39,13 +39,17 @@ public class MovimentacaoAnimal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!estaRondando)
-        {
-            estaRondando = true;
-            StartCoroutine(RealizaRonda());
-        }
 
-        CorrigeLocomocao();
+        if (!agent.isStopped) {
+
+            if (!estaRondando)
+            {
+                estaRondando = true;
+                StartCoroutine(RealizaRonda());
+            }
+
+            CorrigeLocomocao();
+        }
     }
 
     private void CorrigeLocomocao()
@@ -113,5 +117,16 @@ public class MovimentacaoAnimal : MonoBehaviour
     public Vector3 GetVelocity()
     {
         return agent.velocity;
+    }
+
+    public void PararMovimento()
+    {
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+    }
+
+    public void RemoverDestino()
+    {
+        agent.ResetPath();
     }
 }

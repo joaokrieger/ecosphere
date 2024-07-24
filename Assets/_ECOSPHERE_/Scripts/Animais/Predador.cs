@@ -1,77 +1,114 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class Predador : MonoBehaviour
+public class Predador : MonoBehaviour, IDano
 {
-    public float velocidade;
-    public float areaVisao;
-    public bool estaComFome;
-    public float distanciaMinimaPerseguir = 5f;  // Distância mínima para começar a perseguir a presa
-    private float distanciaPresa;
+    public float distanciaConsumo = 1f;
+    public float tempoConsumo = 2f;
+    public int danoAtaque;
+    public int vida;
 
-    private List<GameObject> presasProximas = new List<GameObject>();  // Lista de presas próximas
+    private Transform presaAlvo;
+    private MovimentacaoAnimal movimentacaoAnimal;
+    private Animator animator;
+    private bool consumindoPresa;
+    private bool morreu;
 
-    void OnTriggerEnter2D(Collider2D entidade)
+    // Start is called before the first frame update
+    void Start()
     {
-        // Adicionar presas à lista quando entrarem no collider de área
-        if (entidade.CompareTag("Presa"))
-        {
-            presasProximas.Add(entidade.gameObject);
-        }
-
-        Debug.Log("Entrou");
+        movimentacaoAnimal = GetComponent<MovimentacaoAnimal>();
+        animator = GetComponent<Animator>();
+        consumindoPresa = false;
     }
 
-    void OnTriggerExit2D(Collider2D entidade)
-    {
-        // Remover presas da lista quando saírem do collider de área
-        if (entidade.CompareTag("Presa"))
-        {
-            presasProximas.Remove(entidade.gameObject);
-        }
-
-        Debug.Log("Saiu");
-    }
-
+    // Update is called once per frame
     void Update()
     {
-        if (estaComFome)
+        if (presaAlvo != null && !consumindoPresa)
         {
-            PerseguirPresaProxima();
+            movimentacaoAnimal.SetDestination(presaAlvo.position);
+
+            float distanciaParaPresa = Vector2.Distance(transform.position, presaAlvo.position);
+            if (distanciaParaPresa <= distanciaConsumo)
+            {
+                AtacarPresa();
+            }
         }
     }
 
-    void PerseguirPresaProxima()
+    private void OnTriggerEnter2D(Collider2D colider)
     {
-        GameObject presaMaisProxima = null;
-        float distanciaMinima = Mathf.Infinity;
-
-        // Verificar presas apenas dentro da lista de presas próximas
-        foreach (GameObject presa in presasProximas)
+        if (colider.CompareTag("Presa") && presaAlvo == null)
         {
-            float distanciaAtePresa = Vector3.Distance(transform.position, presa.transform.position);
-            if (distanciaAtePresa < distanciaMinima && distanciaAtePresa > distanciaMinimaPerseguir)
+            Presa presa = colider.transform.GetComponent<Presa>();
+            if (presa.estaViva())
             {
-                distanciaMinima = distanciaAtePresa;
-                presaMaisProxima = presa;
+                presaAlvo = colider.transform;
             }
         }
+    }
 
-        if (presaMaisProxima != null)
+    private void OnTriggerExit2D(Collider2D colider)
+    {
+        if (colider.CompareTag("Presa") && presaAlvo == colider.transform)
         {
-            Debug.Log("Achou presa");
+            presaAlvo = null;
+            movimentacaoAnimal.RemoverDestino();
+        }
+    }
 
-            distanciaPresa = distanciaMinima;
-            Vector2 direction = presaMaisProxima.transform.position - transform.position;
-            direction.Normalize();
-            float visaoPredador = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-            if (distanciaPresa < areaVisao)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, presaMaisProxima.transform.position, velocidade * Time.deltaTime);
-                transform.rotation = Quaternion.Euler(Vector3.forward * visaoPredador);
+    private void AtacarPresa()
+    {
+        Presa presa = presaAlvo.GetComponent<Presa>();
+        if (presa != null)
+        {
+            animator.SetBool("estaAtacando", true);
+            presa.ReceberDano(danoAtaque);
+            if (!presa.estaViva()) {
+                animator.SetBool("estaAtacando", false);
+                StartCoroutine(ConsumirPresa());
             }
         }
+    }
+
+    private IEnumerator ConsumirPresa()
+    {
+        if (presaAlvo != null)
+        {
+            consumindoPresa = true;
+            animator.SetBool("estaAndando", false);
+            animator.SetBool("estaComendo", true);
+            yield return new WaitForSeconds(tempoConsumo);
+
+            //Matando a presa
+            Presa presa = presaAlvo.GetComponent<Presa>();
+            presa.Morrer();
+
+            presaAlvo = null;
+            animator.SetBool("estaComendo", false);
+            consumindoPresa = false;
+        }
+    }
+
+    public void ReceberDano(int quantidade)
+    {
+        if (!morreu)
+        {
+            vida -= quantidade;
+            if (vida <= 0)
+            {
+                Morrer();
+            }
+        }
+    }
+
+    public void Morrer()
+    {
+        morreu = true;
+        animator.SetTrigger("morreu");
+        movimentacaoAnimal.PararMovimento();
     }
 }
