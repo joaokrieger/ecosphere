@@ -3,38 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Predador : MonoBehaviour, IDano
+public class Predador : Animal
 {
-    public float distanciaConsumo = 1f;
-    public float tempoConsumo = 2f;
     public int danoAtaque;
-    public int vida;
+    public float tempoAtaque = 2f;
 
     private Transform presaAlvo;
-    private MovimentacaoAnimal movimentacaoAnimal;
-    private Animator animator;
     private bool consumindoPresa;
-    private bool morreu;
+    private bool atacandoPresa;
 
-    // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        movimentacaoAnimal = GetComponent<MovimentacaoAnimal>();
-        animator = GetComponent<Animator>();
+        base.Start();
         consumindoPresa = false;
+        atacandoPresa = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        if (presaAlvo != null && !consumindoPresa)
+        base.Update();
+        if (presaAlvo != null && !consumindoPresa && !atacandoPresa && estaComFome)
         {
             movimentacaoAnimal.SetDestination(presaAlvo.position);
 
             float distanciaParaPresa = Vector2.Distance(transform.position, presaAlvo.position);
             if (distanciaParaPresa <= distanciaConsumo)
             {
-                AtacarPresa();
+                StartCoroutine(AtacarPresa());
             }
         }
     }
@@ -44,7 +39,7 @@ public class Predador : MonoBehaviour, IDano
         if (colider.CompareTag("Presa") && presaAlvo == null)
         {
             Presa presa = colider.transform.GetComponent<Presa>();
-            if (presa.estaViva())
+            if (presa.EstaVivo())
             {
                 presaAlvo = colider.transform;
             }
@@ -60,18 +55,26 @@ public class Predador : MonoBehaviour, IDano
         }
     }
 
-    private void AtacarPresa()
+    private IEnumerator AtacarPresa()
     {
+        atacandoPresa = true;
         Presa presa = presaAlvo.GetComponent<Presa>();
         if (presa != null)
         {
             animator.SetBool("estaAtacando", true);
-            presa.ReceberDano(danoAtaque);
-            if (!presa.estaViva()) {
-                animator.SetBool("estaAtacando", false);
+            while (presa.EstaVivo() && Vector2.Distance(transform.position, presaAlvo.position) <= distanciaConsumo)
+            {
+                presa.ReceberDano(danoAtaque);
+                yield return new WaitForSeconds(tempoAtaque);
+            }
+            animator.SetBool("estaAtacando", false);
+
+            if (!presa.EstaVivo())
+            {
                 StartCoroutine(ConsumirPresa());
             }
         }
+        atacandoPresa = false;
     }
 
     private IEnumerator ConsumirPresa()
@@ -83,32 +86,15 @@ public class Predador : MonoBehaviour, IDano
             animator.SetBool("estaComendo", true);
             yield return new WaitForSeconds(tempoConsumo);
 
-            //Matando a presa
-            Presa presa = presaAlvo.GetComponent<Presa>();
-            presa.Morrer();
-
             presaAlvo = null;
             animator.SetBool("estaComendo", false);
             consumindoPresa = false;
+            tempoDesdeUltimoConsumo = 0f;  // Reseta o tempo de fome
         }
     }
 
-    public void ReceberDano(int quantidade)
+    public override void Morrer()
     {
-        if (!morreu)
-        {
-            vida -= quantidade;
-            if (vida <= 0)
-            {
-                Morrer();
-            }
-        }
-    }
-
-    public void Morrer()
-    {
-        morreu = true;
-        animator.SetTrigger("morreu");
-        movimentacaoAnimal.PararMovimento();
+        base.Morrer();
     }
 }

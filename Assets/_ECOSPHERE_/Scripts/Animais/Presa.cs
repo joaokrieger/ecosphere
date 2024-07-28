@@ -2,34 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Presa : MonoBehaviour, IDano
+public class Presa : Animal
 {
-    [Header("Configurações de Consumo")]
-    public float distanciaConsumo = 1f;
-    public float tempoConsumo = 2f;
-    public int vida;
-
     private Transform gramaAlvo;
-    private MovimentacaoAnimal movimentacaoAnimal;
-    private Animator animator;
     private bool consumindoGrama;
-    private bool morreu;
 
-    // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        movimentacaoAnimal = GetComponent<MovimentacaoAnimal>();
-        animator = GetComponent<Animator>();
+        base.Start();
         consumindoGrama = false;
-        morreu = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        if (!morreu)
+        base.Update();
+        if (!morreu && estaComFome)
         {
-
             if (gramaAlvo != null && !consumindoGrama)
             {
                 movimentacaoAnimal.SetDestination(gramaAlvo.position);
@@ -61,7 +49,6 @@ public class Presa : MonoBehaviour, IDano
 
             yield return new WaitForSeconds(tempoConsumo);
 
-            // Verifica se o alvo ainda existe antes de destruir
             if (gramaAlvo != null)
             {
                 Destroy(gramaAlvo.gameObject);
@@ -70,30 +57,12 @@ public class Presa : MonoBehaviour, IDano
             gramaAlvo = null;
             animator.SetBool("estaPastando", false);
             consumindoGrama = false;
+            tempoDesdeUltimoConsumo = 0f;  // Reseta o tempo de fome
         }
     }
 
-    public void ReceberDano(int quantidade)
+    public override void Morrer()
     {
-        if (!morreu)
-        {
-            vida -= quantidade;
-            if (vida <= 0)
-            {
-                Morrer();
-            }
-        }
-    }
-
-    public void Morrer()
-    {
-        morreu = true;
-        animator.SetTrigger("morreu");
-        movimentacaoAnimal.PararMovimento();
-    }
-
-    public bool estaViva()
-    {
-        return !morreu;
+        base.Morrer();
     }
 }

@@ -87,20 +87,12 @@ public class MovimentacaoAnimal : MonoBehaviour
 
             Vector3Int posicaoCelula = tilemapCampo.WorldToCell(posicaoAleatoria);
 
-            // Adicione um contador para evitar loop infinito
-            int tentativas = 0;
             while (!tilemapCampo.HasTile(posicaoCelula) || tilemapEstrutura.HasTile(posicaoCelula))
             {
                 randomX = Random.Range(areaMin.x, areaMax.x);
                 randomY = Random.Range(areaMin.y, areaMax.y);
                 posicaoAleatoria = new Vector3(randomX, randomY, 0);
                 posicaoCelula = tilemapCampo.WorldToCell(posicaoAleatoria);
-
-                tentativas++;
-                if (tentativas > 100) // Limite de tentativas para evitar loop infinito
-                {
-                    break;
-                }
             }
 
             agent.SetDestination(posicaoAleatoria);
