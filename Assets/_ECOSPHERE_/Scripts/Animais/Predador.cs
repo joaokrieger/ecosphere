@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class Predador : Animal
 {
+    [Header("Configurações do Predador")]
     public int danoAtaque;
     public float tempoAtaque = 2f;
 
@@ -24,12 +25,14 @@ public class Predador : Animal
         base.Update();
         if (presaAlvo != null && !consumindoPresa && !atacandoPresa && estaComFome)
         {
-            movimentacaoAnimal.SetDestination(presaAlvo.position);
-
             float distanciaParaPresa = Vector2.Distance(transform.position, presaAlvo.position);
-            if (distanciaParaPresa <= distanciaConsumo)
+            if (distanciaParaPresa <= distanciaConsumo && !atacandoPresa)
             {
                 StartCoroutine(AtacarPresa());
+            }
+            else
+            {
+                movimentacaoAnimal.SetDestination(presaAlvo.position);
             }
         }
     }
@@ -62,19 +65,17 @@ public class Predador : Animal
         if (presa != null)
         {
             animator.SetBool("estaAtacando", true);
-            while (presa.EstaVivo() && Vector2.Distance(transform.position, presaAlvo.position) <= distanciaConsumo)
-            {
-                presa.ReceberDano(danoAtaque);
-                yield return new WaitForSeconds(tempoAtaque);
-            }
-            animator.SetBool("estaAtacando", false);
+            presa.ReceberDano(danoAtaque);
 
             if (!presa.EstaVivo())
             {
                 StartCoroutine(ConsumirPresa());
             }
         }
+
+        yield return new WaitForSeconds(tempoAtaque);
         atacandoPresa = false;
+        animator.SetBool("estaAtacando", false);
     }
 
     private IEnumerator ConsumirPresa()

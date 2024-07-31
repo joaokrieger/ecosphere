@@ -26,10 +26,6 @@ public class Vegetacao : MonoBehaviour
         StartCoroutine(RotinaSpawnGrama());
     }
 
-    void Update()
-    {
-    }
-
     IEnumerator RotinaSpawnGrama()
     {
         int gramaSpawnada = 0;

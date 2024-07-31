@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Presa : Animal
 {
+    [Header("Configurações da Presa")]
     private Transform gramaAlvo;
     private bool consumindoGrama;
 
@@ -20,12 +21,14 @@ public class Presa : Animal
         {
             if (gramaAlvo != null && !consumindoGrama)
             {
-                movimentacaoAnimal.SetDestination(gramaAlvo.position);
-
                 float distanciaParaGrama = Vector2.Distance(transform.position, gramaAlvo.position);
                 if (distanciaParaGrama <= distanciaConsumo)
                 {
                     StartCoroutine(ConsumirGrama());
+                }
+                else
+                {
+                    movimentacaoAnimal.SetDestination(gramaAlvo.position);
                 }
             }
         }
