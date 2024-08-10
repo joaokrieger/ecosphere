@@ -22,18 +22,25 @@ public class Predador : Animal
 
     protected override void Update()
     {
-        base.Update();
-        if (presaAlvo != null && !consumindoPresa && !atacandoPresa && estaComFome)
+        if (!morreu)
         {
-            float distanciaParaPresa = Vector2.Distance(transform.position, presaAlvo.position);
-            if (distanciaParaPresa <= distanciaConsumo && !atacandoPresa)
+            base.Update();
+            if (presaAlvo != null && !consumindoPresa && !atacandoPresa && estaComFome)
             {
-                StartCoroutine(AtacarPresa());
+                float distanciaParaPresa = Vector2.Distance(transform.position, presaAlvo.position);
+                if (distanciaParaPresa <= distanciaConsumo && !atacandoPresa)
+                {
+                    StartCoroutine(AtacarPresa());
+                }
+                else
+                {
+                    movimentacaoAnimal.SetDestination(presaAlvo.position);
+                }
             }
-            else
-            {
-                movimentacaoAnimal.SetDestination(presaAlvo.position);
-            }
+        }
+        else
+        {
+            return;
         }
     }
 

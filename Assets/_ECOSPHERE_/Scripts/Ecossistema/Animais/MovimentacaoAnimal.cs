@@ -18,6 +18,7 @@ public class MovimentacaoAnimal : MonoBehaviour
     private Tilemap tilemapCampo;
     private Tilemap tilemapEstrutura;
     private bool estaRondando = false;
+    private bool realizaRonda = true;
 
     // Start is called before the first frame update
     void Start()
@@ -56,16 +57,16 @@ public class MovimentacaoAnimal : MonoBehaviour
     {
         Vector3 velocidade = agent.velocity;
 
-        if (velocidade.x < 0)
+        if (velocidade.x < 0.5f)
         {
             spriteRenderer.flipX = true;
         }
-        else if (velocidade.x > 0)
+        else if (velocidade.x > 0.5f)
         {
             spriteRenderer.flipX = false;
         }
 
-        if (velocidade.magnitude > 0.1f)
+        if (velocidade.magnitude > 0.5f)
         {
             animator.SetBool("estaAndando", true);
         }
@@ -77,7 +78,7 @@ public class MovimentacaoAnimal : MonoBehaviour
 
     private IEnumerator RealizaRonda()
     {
-        while (true)
+        while (realizaRonda)
         {
             yield return new WaitForSeconds(tempoRonda);
 
@@ -115,6 +116,7 @@ public class MovimentacaoAnimal : MonoBehaviour
     {
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
+        realizaRonda = false;
     }
 
     public void RemoverDestino()

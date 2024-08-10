@@ -38,6 +38,10 @@ public abstract class Animal : MonoBehaviour, IDano
                 this.Morrer();
             }
         }
+        else
+        {
+            return;
+        }
     }
 
     // Método para receber dano, comum a todos os animais
@@ -57,6 +61,7 @@ public abstract class Animal : MonoBehaviour, IDano
     {
         morreu = true;
         animator.SetTrigger("morreu");
+        movimentacaoAnimal.RemoverDestino();
         movimentacaoAnimal.PararMovimento();
     }
 
