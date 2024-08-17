@@ -10,13 +10,11 @@ public class Predador : Animal
     public float tempoAtaque = 2f;
 
     private Transform presaAlvo;
-    private bool consumindoPresa;
     private bool atacandoPresa;
 
     protected override void Start()
     {
         base.Start();
-        consumindoPresa = false;
         atacandoPresa = false;
     }
 
@@ -25,7 +23,7 @@ public class Predador : Animal
         if (!morreu)
         {
             base.Update();
-            if (presaAlvo != null && !consumindoPresa && !atacandoPresa && estaComFome)
+            if (presaAlvo != null && !atacandoPresa && estaComFome)
             {
                 float distanciaParaPresa = Vector2.Distance(transform.position, presaAlvo.position);
                 if (distanciaParaPresa <= distanciaConsumo && !atacandoPresa)
@@ -76,7 +74,9 @@ public class Predador : Animal
 
             if (!presa.EstaVivo())
             {
-                StartCoroutine(ConsumirPresa());
+                presaAlvo = null;
+                tempoDesdeUltimoConsumo = 0f;  // Reseta o tempo de fome
+                RenderPontoVida(valorGanhoAlimentacao);
             }
         }
 
@@ -85,24 +85,9 @@ public class Predador : Animal
         animator.SetBool("estaAtacando", false);
     }
 
-    private IEnumerator ConsumirPresa()
-    {
-        if (presaAlvo != null)
-        {
-            consumindoPresa = true;
-            animator.SetBool("estaAndando", false);
-            animator.SetBool("estaComendo", true);
-            yield return new WaitForSeconds(tempoConsumo);
-
-            presaAlvo = null;
-            animator.SetBool("estaComendo", false);
-            consumindoPresa = false;
-            tempoDesdeUltimoConsumo = 0f;  // Reseta o tempo de fome
-        }
-    }
-
     public override void Morrer()
     {
         base.Morrer();
+        GameController.GetInstance().Remove(GameController.Entidade.Predador);
     }
 }

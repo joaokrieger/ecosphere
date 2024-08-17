@@ -10,12 +10,16 @@ public abstract class Animal : MonoBehaviour, IDano
     public float tempoInanicao;
     public float distanciaConsumo;
     public float tempoConsumo;
-
     protected float tempoDesdeUltimoConsumo;
     protected MovimentacaoAnimal movimentacaoAnimal;
     protected Animator animator;
     protected bool morreu;
     protected bool estaComFome;
+
+    [Header("Configurações de Economia")]
+    public int precoSpawn;
+    public int valorGanhoAlimentacao;
+    public int valorGanhoReproducao;
 
     protected virtual void Start()
     {
@@ -68,5 +72,15 @@ public abstract class Animal : MonoBehaviour, IDano
     public bool EstaVivo()
     {
         return !morreu;
+    }
+
+    public int GetPrecoSpawn()
+    {
+        return precoSpawn; 
+    }
+
+    public void RenderPontoVida(int pontoVida)
+    {
+        GameController.GetInstance().GetCarteiraPontoVida().AdicionaSaldo(pontoVida);
     }
 }

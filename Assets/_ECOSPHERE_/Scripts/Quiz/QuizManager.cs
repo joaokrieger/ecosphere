@@ -70,15 +70,39 @@ public class QuizManager : MonoBehaviour
     private void CarregarPerguntas()
     {
         perguntas.Add(new Pergunta(
-            "A relação entre os seres de uma espécie que captura e destrói fisicamente seres de outra espécie, utilizando-os como alimento, é chamada de",
-            new string[] { "Parasitismo", "Competição", "Predatismo", "Mutualismo" },
+            "O que é uma cadeia alimentar?",
+            new string[] { "Uma sequência de animais que vivem no mesmo habitat", "A ordem em que os animais se tornam amigos", "A transferência de energia dos produtores para os consumidores", "A quantidade de água disponível em um ecossistema" },
             3
+        ));
+
+        perguntas.Add(new Pergunta(
+            "Qual dos seguintes organismos é um produtor?",
+            new string[] { "Cervo", "Urso", "Cogumelo", "Grama" },
+            4
         ));
 
         perguntas.Add(new Pergunta(
             "Conjunto de seres da mesma ____________, que habita determinada região geográfica, forma uma ____________",
             new string[] { "espécie e bioma", "biosfera e espécie", "população e biosfera", "espécie e população" },
             4
+        ));
+
+        perguntas.Add(new Pergunta(
+            "Qual é o papel de um herbívoro em uma cadeia alimentar?",
+            new string[] { "Comer outros herbívoros", "Produzir sua própria comida", "Comer plantas e fornecer comida para carnívoros", "Decompor plantas e animais mortos" },
+           3
+        ));
+
+        perguntas.Add(new Pergunta(
+            "O que pode acontecer se um predador desaparecer de um ecossistema?",
+            new string[] { "As plantas vão morrer", "Os herbívoros podem se multiplicar demais e afetar o equilíbrio do ecossistema", "Todos os outros animais vão se tornar produtores", "A água vai desaparecer do ambiente" },
+           2
+        ));
+
+        perguntas.Add(new Pergunta(
+            "A relação entre os seres de uma espécie que captura e destrói fisicamente seres de outra espécie, utilizando-os como alimento, é chamada de",
+            new string[] { "Parasitismo", "Competição", "Predatismo", "Mutualismo" },
+            3
         ));
 
         perguntas.Add(new Pergunta(

@@ -55,6 +55,8 @@ public class Presa : Animal
             if (gramaAlvo != null)
             {
                 Destroy(gramaAlvo.gameObject);
+                GameController.GetInstance().Remove(GameController.Entidade.Produtor);
+                RenderPontoVida(valorGanhoAlimentacao);
             }
 
             gramaAlvo = null;
@@ -64,8 +66,10 @@ public class Presa : Animal
         }
     }
 
+
     public override void Morrer()
     {
         base.Morrer();
+        GameController.GetInstance().Remove(GameController.Entidade.Presa);
     }
 }

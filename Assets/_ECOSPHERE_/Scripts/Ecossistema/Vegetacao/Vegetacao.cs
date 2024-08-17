@@ -5,14 +5,15 @@ using UnityEngine.Tilemaps;
 
 public class Vegetacao : MonoBehaviour
 {
-    public GameObject prefabGrama; // O prefab de grama que será spawnado
-    public int numeroDeGrama; // Número de instâncias de grama que você deseja spawnar
-    public Vector2 areaSpawnMin; // Coordenadas mínimas da área de spawn
-    public Vector2 areaSpawnMax; // Coordenadas máximas da área de spawn
-    public float intervaloSpawn; // Intervalo de tempo entre cada spawn
+    public int numeroDeGrama;
+    public GameObject gramaPrefab;
+    public Vector2 areaSpawnMin;
+    public Vector2 areaSpawnMax;
+    public float intervaloSpawn;
 
     private Tilemap tilemapCampo;
     private Tilemap tilemapEstrutura;
+    private SpawnAnimal spawnAnimal;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class Vegetacao : MonoBehaviour
 
         GameObject estruturaObject = GameObject.FindWithTag("Estruturas");
         tilemapEstrutura = estruturaObject.GetComponent<Tilemap>();
+        spawnAnimal = new SpawnAnimal();
 
         StartCoroutine(RotinaSpawnGrama());
     }
@@ -41,8 +43,7 @@ public class Vegetacao : MonoBehaviour
             if (tilemapCampo.HasTile(posicaoCelula) && !tilemapEstrutura.HasTile(posicaoCelula))
             {
                 Vector3 posicaoSpawn = tilemapCampo.CellToWorld(posicaoCelula) + tilemapCampo.tileAnchor;
-
-                Instantiate(prefabGrama, posicaoSpawn, Quaternion.identity);
+                spawnAnimal.SpawnGrama(gramaPrefab, posicaoSpawn);
                 gramaSpawnada++;
             }
 
