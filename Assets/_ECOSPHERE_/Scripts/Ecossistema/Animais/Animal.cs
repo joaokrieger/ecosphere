@@ -17,6 +17,7 @@ public abstract class Animal : MonoBehaviour, IDano
     protected bool estaComFome;
 
     [Header("Configurações de Economia")]
+    public GameObject pontoVidaPrefab;
     public int precoSpawn;
     public int valorGanhoAlimentacao;
     public int valorGanhoReproducao;
@@ -82,5 +83,6 @@ public abstract class Animal : MonoBehaviour, IDano
     public void RenderPontoVida(int pontoVida)
     {
         GameController.GetInstance().GetCarteiraPontoVida().AdicionaSaldo(pontoVida);
+        Instantiate(pontoVidaPrefab, transform.position, Quaternion.identity);
     }
 }

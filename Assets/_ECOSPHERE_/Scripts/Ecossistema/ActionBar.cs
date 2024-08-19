@@ -1,12 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class ActionBar : MonoBehaviour
 {
     public GameObject subActionBar;
     private bool estaExibindoSubActionBar = false;
+
+    private SceneHandler sceneHandler;
+
+    private void Start()
+    {
+        GameObject sceneHandlerObject = GameObject.FindGameObjectWithTag("SceneHandler");
+        if (sceneHandlerObject != null)
+        {
+            sceneHandler = sceneHandlerObject.GetComponent<SceneHandler>();
+        }
+    }
 
     public void RenderizaSubActionBar()
     {
@@ -21,7 +31,7 @@ public class ActionBar : MonoBehaviour
 
     public void NavegarParaPesquisa()
     {
-        SceneManager.LoadScene("AvaliacaoEcologica");
+        sceneHandler.NavegarParaAvaliacaoEcologica();
     }
 
     public void SalvarJogo()

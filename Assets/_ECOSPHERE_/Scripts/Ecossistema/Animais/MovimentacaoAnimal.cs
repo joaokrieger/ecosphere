@@ -7,8 +7,6 @@ using UnityEngine.Tilemaps;
 public class MovimentacaoAnimal : MonoBehaviour
 {
     [Header("Configurações de Movimento")]
-    public Vector2 areaMin;
-    public Vector2 areaMax;
     public float tempoRonda = 5f;
     public float tempoParado = 2f;
 
@@ -78,20 +76,22 @@ public class MovimentacaoAnimal : MonoBehaviour
 
     private IEnumerator RealizaRonda()
     {
+        BoundsInt bounds = tilemapCampo.cellBounds;
+
         while (realizaRonda)
         {
             yield return new WaitForSeconds(tempoRonda);
 
-            float randomX = Random.Range(areaMin.x, areaMax.x);
-            float randomY = Random.Range(areaMin.y, areaMax.y);
+            float randomX = Random.Range(bounds.xMin, bounds.xMax);
+            float randomY = Random.Range(bounds.yMin, bounds.yMax);
             Vector3 posicaoAleatoria = new Vector3(randomX, randomY, 0);
 
             Vector3Int posicaoCelula = tilemapCampo.WorldToCell(posicaoAleatoria);
 
             while (!tilemapCampo.HasTile(posicaoCelula) || tilemapEstrutura.HasTile(posicaoCelula))
             {
-                randomX = Random.Range(areaMin.x, areaMax.x);
-                randomY = Random.Range(areaMin.y, areaMax.y);
+                randomX = Random.Range(bounds.xMin, bounds.xMax);
+                randomY = Random.Range(bounds.yMin, bounds.yMax);
                 posicaoAleatoria = new Vector3(randomX, randomY, 0);
                 posicaoCelula = tilemapCampo.WorldToCell(posicaoAleatoria);
             }
@@ -101,6 +101,7 @@ public class MovimentacaoAnimal : MonoBehaviour
             yield return new WaitForSeconds(tempoParado);
         }
     }
+
 
     public void SetDestination(Vector3 destination)
     {

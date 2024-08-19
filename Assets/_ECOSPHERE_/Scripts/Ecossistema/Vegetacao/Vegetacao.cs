@@ -13,18 +13,13 @@ public class Vegetacao : MonoBehaviour
 
     private Tilemap tilemapCampo;
     private Tilemap tilemapEstrutura;
-    private SpawnAnimal spawnAnimal;
 
     void Start()
     {
-
         GameObject campoObject = GameObject.FindWithTag("Campo");
         tilemapCampo = campoObject.GetComponent<Tilemap>();
-
         GameObject estruturaObject = GameObject.FindWithTag("Estruturas");
         tilemapEstrutura = estruturaObject.GetComponent<Tilemap>();
-        spawnAnimal = new SpawnAnimal();
-
         StartCoroutine(RotinaSpawnGrama());
     }
 
@@ -43,11 +38,10 @@ public class Vegetacao : MonoBehaviour
             if (tilemapCampo.HasTile(posicaoCelula) && !tilemapEstrutura.HasTile(posicaoCelula))
             {
                 Vector3 posicaoSpawn = tilemapCampo.CellToWorld(posicaoCelula) + tilemapCampo.tileAnchor;
-                spawnAnimal.SpawnGrama(gramaPrefab, posicaoSpawn);
+                SpawnAnimal.SpawnGrama(gramaPrefab, posicaoSpawn);
                 gramaSpawnada++;
+                yield return new WaitForSeconds(intervaloSpawn);
             }
-
-            yield return new WaitForSeconds(intervaloSpawn);
         }
     }
 }

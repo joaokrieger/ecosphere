@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -11,11 +10,19 @@ public class QuizManager : MonoBehaviour
     public GameObject[] opcoes;
     public int questaoAtual;
 
+    private SceneHandler sceneHandler;
+
     public Text textoQuestao;
 
     private void Start() {
         CarregarPerguntas();
         GerarQuestao();
+
+        GameObject sceneHandlerObject = GameObject.FindGameObjectWithTag("SceneHandler");
+        if (sceneHandlerObject != null)
+        {
+            sceneHandler = sceneHandlerObject.GetComponent<SceneHandler>();
+        }
     }
 
     public IEnumerator RespostaCorreta()
@@ -114,6 +121,6 @@ public class QuizManager : MonoBehaviour
 
     private void FinalizaAvalicaoEcologica()
     {
-        SceneManager.LoadScene("SimuladorEcossistema");
+        sceneHandler.NavegarParaEcossistema();
     }
 }
