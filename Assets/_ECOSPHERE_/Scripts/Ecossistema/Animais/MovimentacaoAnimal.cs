@@ -18,7 +18,6 @@ public class MovimentacaoAnimal : MonoBehaviour
     private bool estaRondando = false;
     private bool realizaRonda = true;
 
-    // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -35,10 +34,8 @@ public class MovimentacaoAnimal : MonoBehaviour
         tilemapEstrutura = estruturaObject.GetComponent<Tilemap>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-
         if (!agent.isStopped) {
 
             if (!estaRondando)
@@ -106,11 +103,6 @@ public class MovimentacaoAnimal : MonoBehaviour
     public void SetDestination(Vector3 destination)
     {
         agent.SetDestination(destination);
-    }
-
-    public Vector3 GetVelocity()
-    {
-        return agent.velocity;
     }
 
     public void PararMovimento()

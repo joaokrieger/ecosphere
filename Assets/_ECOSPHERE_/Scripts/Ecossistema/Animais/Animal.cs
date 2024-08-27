@@ -4,6 +4,9 @@ using UnityEngine;
 
 public abstract class Animal : MonoBehaviour, IDano
 {
+    [Header("Configurações do Ecossistema")]
+    private Ecossistema ecossistema;
+
     [Header("Configurações de Animal")]
     public int vida;
     public float tempoFome;
@@ -29,13 +32,14 @@ public abstract class Animal : MonoBehaviour, IDano
         morreu = false;
         estaComFome = false;
         tempoDesdeUltimoConsumo = 0f;
+        ecossistema = FindObjectOfType<Ecossistema>();
     }
 
     protected virtual void Update()
     {
         if (!morreu)
         {
-            tempoDesdeUltimoConsumo += Time.deltaTime;  // Incrementa o tempo desde a última refeição
+            tempoDesdeUltimoConsumo += Time.deltaTime; 
             estaComFome = tempoDesdeUltimoConsumo >= tempoFome;
 
             if (estaComFome && tempoDesdeUltimoConsumo >= tempoInanicao)
@@ -49,7 +53,6 @@ public abstract class Animal : MonoBehaviour, IDano
         }
     }
 
-    // Método para receber dano, comum a todos os animais
     public void ReceberDano(int quantidade)
     {
         if (!morreu)
@@ -68,6 +71,7 @@ public abstract class Animal : MonoBehaviour, IDano
         animator.SetTrigger("morreu");
         movimentacaoAnimal.RemoverDestino();
         movimentacaoAnimal.PararMovimento();
+        StartCoroutine(ecossistema.Decompor(this.gameObject));
     }
 
     public bool EstaVivo()

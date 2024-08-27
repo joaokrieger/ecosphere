@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class VisaoJogador : MonoBehaviour
 {
+
+    public float zoom;
+    public float sensibilidadeZoom;
+    public float zoomMaximo, zoomMinimo;
+
     private Vector3 posicaoAtual;
     private Vector3 diferenca;
     private Vector3 ResetCamera;
@@ -13,6 +18,21 @@ public class VisaoJogador : MonoBehaviour
     private void Start()
     {
         ResetCamera = Camera.main.transform.position;
+    }
+
+    private void Update()
+    {
+        if(Input.mouseScrollDelta.y > 0)
+        {
+            Camera.main.orthographicSize -= zoom * Time.deltaTime * sensibilidadeZoom;
+        }
+
+        if (Input.mouseScrollDelta.y < 0)
+        {
+            Camera.main.orthographicSize += zoom * Time.deltaTime * sensibilidadeZoom;
+        }
+
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, zoomMinimo, zoomMaximo);
     }
 
     private void LateUpdate()

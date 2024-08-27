@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class GameController
 {
     private static GameController instancia;

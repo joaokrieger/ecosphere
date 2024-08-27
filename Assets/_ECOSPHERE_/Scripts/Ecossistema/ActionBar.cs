@@ -12,10 +12,7 @@ public class ActionBar : MonoBehaviour
     private void Start()
     {
         GameObject sceneHandlerObject = GameObject.FindGameObjectWithTag("SceneHandler");
-        if (sceneHandlerObject != null)
-        {
-            sceneHandler = sceneHandlerObject.GetComponent<SceneHandler>();
-        }
+        sceneHandler = sceneHandlerObject.GetComponent<SceneHandler>();
     }
 
     public void RenderizaSubActionBar()
@@ -26,7 +23,7 @@ public class ActionBar : MonoBehaviour
 
     public void NavegarParaMenu()
     {
-
+        
     }
 
     public void NavegarParaPesquisa()
