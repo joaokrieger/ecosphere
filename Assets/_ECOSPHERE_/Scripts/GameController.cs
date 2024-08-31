@@ -1,9 +1,9 @@
 public class GameController
 {
     private static GameController instancia;
-    private int predador = 0;
-    private int presa = 0;
-    private int produtor = 0;
+    private int quantidadeCarnivoro = 0;
+    private int quantidadeHerbivoro = 0;
+    private int quantidadeProdutor = 0;
     private CarteiraPontoVida carteira = new CarteiraPontoVida();
 
     private GameController(){}
@@ -19,8 +19,8 @@ public class GameController
 
     public enum Entidade
     {
-        Predador,
-        Presa,
+        Carnivoro,
+        Herbivoro,
         Produtor
     }
 
@@ -28,14 +28,14 @@ public class GameController
     {
         switch (entidade)
         {
-            case Entidade.Predador:
-                predador += quantidade;
+            case Entidade.Carnivoro:
+                quantidadeCarnivoro += quantidade;
                 break;
-            case Entidade.Presa:
-                presa += quantidade;
+            case Entidade.Herbivoro:
+                quantidadeHerbivoro += quantidade;
                 break;
             case Entidade.Produtor:
-                produtor += quantidade;
+                quantidadeProdutor += quantidade;
                 break;
         }
     }
@@ -53,12 +53,12 @@ public class GameController
     public int GetQuantidade(Entidade entidade) {
         switch (entidade)
         {
-            case Entidade.Predador:
-                return predador;
-            case Entidade.Presa:
-                return presa;
+            case Entidade.Carnivoro:
+                return quantidadeCarnivoro;
+            case Entidade.Herbivoro:
+                return quantidadeHerbivoro;
             case Entidade.Produtor:
-                return produtor;
+                return quantidadeProdutor;
             default:
                 return 0;
         }

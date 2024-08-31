@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class MonitorRecursos : MonoBehaviour
 {
-    public GameObject indicadorPredadores;
-    public GameObject indicadorPresas;
+    public GameObject indicadorCarnivoros;
+    public GameObject indicadorHerbivoros;
     public GameObject indicadorProdutores;
     public GameObject indicadorPontoVida;
 
@@ -19,8 +19,8 @@ public class MonitorRecursos : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        indicadorPredadores.GetComponent<Text>().text = GameController.GetInstance().GetQuantidade(GameController.Entidade.Predador).ToString();
-        indicadorPresas.GetComponent<Text>().text = GameController.GetInstance().GetQuantidade(GameController.Entidade.Presa).ToString();
+        indicadorCarnivoros.GetComponent<Text>().text = GameController.GetInstance().GetQuantidade(GameController.Entidade.Carnivoro).ToString();
+        indicadorHerbivoros.GetComponent<Text>().text = GameController.GetInstance().GetQuantidade(GameController.Entidade.Herbivoro).ToString();
         indicadorProdutores.GetComponent<Text>().text = GameController.GetInstance().GetQuantidade(GameController.Entidade.Produtor).ToString();
         indicadorPontoVida.GetComponent<Text>().text = GameController.GetInstance().GetCarteiraPontoVida().GetSaldo().ToString();
     }
