@@ -15,6 +15,7 @@ public class Herbivoro : Animal
     {
         base.Start();
         animator = GetComponent<Animator>();
+        GameController.GetInstance().Add(GameController.Entidade.Herbivoro);
     }
 
     protected virtual void Update()
@@ -24,6 +25,7 @@ public class Herbivoro : Animal
 
         if (parceiroAcasalamento != null)
         {
+            LocomoverPara(parceiroAcasalamento.transform.position);
             if (Vector2.Distance(transform.position, parceiroAcasalamento.transform.position) < 2f)
             {
                 Reproduzir();
@@ -104,6 +106,7 @@ public class Herbivoro : Animal
             gramaAlvo = null;
             navMeshAgent.ResetPath();
             this.tempoFome = this.saciedade;
+            base.Comer();
         }
     }
 
@@ -111,5 +114,6 @@ public class Herbivoro : Animal
     {
         base.Morrer();
         animator.SetTrigger("morreu");
+        GameController.GetInstance().Remove(GameController.Entidade.Herbivoro);
     }
 }

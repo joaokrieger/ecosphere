@@ -28,7 +28,6 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(ursoPrefab))
         {
             Instantiate(ursoPrefab, spawnPosition, Quaternion.identity);
-            GameController.GetInstance().Add(GameController.Entidade.Carnivoro);
         }
     }
 
@@ -37,7 +36,6 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(loboPrefab))
         {
             Instantiate(loboPrefab, spawnPosition, Quaternion.identity);
-            GameController.GetInstance().Add(GameController.Entidade.Carnivoro);
         }
     }
 
@@ -46,7 +44,6 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(coelhoPrefab))
         {
             Instantiate(coelhoPrefab, spawnPosition, Quaternion.identity);
-            GameController.GetInstance().Add(GameController.Entidade.Herbivoro);
         }
     }
 
@@ -55,7 +52,6 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(raposaPrefab))
         {
             Instantiate(raposaPrefab, spawnPosition, Quaternion.identity);
-            GameController.GetInstance().Add(GameController.Entidade.Carnivoro);
         }
     }
 
@@ -64,7 +60,6 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(javaliPrefab))
         {
             Instantiate(javaliPrefab, spawnPosition, Quaternion.identity);
-            GameController.GetInstance().Add(GameController.Entidade.Herbivoro);
         }
     }
 
@@ -73,7 +68,6 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(cervoPrefab))
         { 
             Instantiate(cervoPrefab, spawnPosition, Quaternion.identity);
-            GameController.GetInstance().Add(GameController.Entidade.Herbivoro);
         }
     }
 

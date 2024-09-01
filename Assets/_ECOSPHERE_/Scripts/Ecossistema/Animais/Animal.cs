@@ -11,6 +11,9 @@ public abstract class Animal : MonoBehaviour
 
     [Header("Configurações da Economia")]
     public int precoSpawn;
+    public int rendaAlimentacao;
+    public int rendaReproducao;
+    public GameObject pontoVidaPrefab;
 
     [Header("Configurações de Animal")]
     public Especie especie;
@@ -117,10 +120,14 @@ public abstract class Animal : MonoBehaviour
             filhoteAnimal.tempoFome = this.saciedade;
             tempoReproducao = intervaloReproducao * 2;
             filhoteAnimal.tempoReproducao = this.tempoReproducao;
+
+            RenderPontoVida(rendaReproducao);
         }
     }
 
-    protected abstract void Comer();
+    protected virtual void Comer() {
+        RenderPontoVida(rendaAlimentacao);
+    }
 
     protected void VerificaFome()
     {
@@ -154,5 +161,11 @@ public abstract class Animal : MonoBehaviour
     public int GetPrecoSpawn()
     {
         return precoSpawn;
+    }
+
+    public void RenderPontoVida(int pontos)
+    {
+        GameController.GetInstance().GetCarteiraPontoVida().AdicionaSaldo(pontos);
+        Instantiate(pontoVidaPrefab, gameObject.transform.position, Quaternion.identity);
     }
 }

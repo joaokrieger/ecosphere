@@ -18,6 +18,7 @@ public class Carnivoro : Animal
     {
         base.Start();
         animator = GetComponent<Animator>();
+        GameController.GetInstance().Add(GameController.Entidade.Carnivoro);
     }
 
     protected virtual void Update()
@@ -139,6 +140,7 @@ public class Carnivoro : Animal
 
     protected override void Comer()
     {
+        base.Comer();
         presaAlvo = null;
         navMeshAgent.ResetPath();
         this.tempoFome = this.saciedade;
@@ -148,5 +150,6 @@ public class Carnivoro : Animal
     {
         base.Morrer();
         animator.SetTrigger("morreu");
+        GameController.GetInstance().Remove(GameController.Entidade.Carnivoro);
     }
 }

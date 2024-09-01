@@ -5,23 +5,24 @@ using UnityEngine;
 
 public class MonitorRecursos : MonoBehaviour
 {
+    public GameObject indicadorPopulacao;
     public GameObject indicadorCarnivoros;
     public GameObject indicadorHerbivoros;
     public GameObject indicadorProdutores;
     public GameObject indicadorPontoVida;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
-        indicadorCarnivoros.GetComponent<Text>().text = GameController.GetInstance().GetQuantidade(GameController.Entidade.Carnivoro).ToString();
-        indicadorHerbivoros.GetComponent<Text>().text = GameController.GetInstance().GetQuantidade(GameController.Entidade.Herbivoro).ToString();
-        indicadorProdutores.GetComponent<Text>().text = GameController.GetInstance().GetQuantidade(GameController.Entidade.Produtor).ToString();
+
+        int quantidadeCarnivoro = GameController.GetInstance().GetQuantidade(GameController.Entidade.Carnivoro);
+        int quantidadeHerbivoro = GameController.GetInstance().GetQuantidade(GameController.Entidade.Herbivoro);
+        int quantidadeProdutor = GameController.GetInstance().GetQuantidade(GameController.Entidade.Produtor);
+
+        indicadorCarnivoros.GetComponent<Text>().text = quantidadeCarnivoro.ToString();
+        indicadorHerbivoros.GetComponent<Text>().text = quantidadeHerbivoro.ToString();
+        indicadorProdutores.GetComponent<Text>().text = quantidadeProdutor.ToString();
+        indicadorPopulacao.GetComponent<Text>().text = (quantidadeCarnivoro + quantidadeHerbivoro).ToString();
         indicadorPontoVida.GetComponent<Text>().text = GameController.GetInstance().GetCarteiraPontoVida().GetSaldo().ToString();
     }
 }

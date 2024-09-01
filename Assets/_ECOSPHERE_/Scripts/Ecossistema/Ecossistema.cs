@@ -25,7 +25,7 @@ public class Ecossistema : MonoBehaviour
 
         for (int i = 0; i < numeroCogumelos; i++)
         {
-            Vector3 posicaoAleatoria = GerarPosicaoAleatoria(posicaoCadaver);
+            Vector3 posicaoAleatoria = GerarPosicaoAleatoriaAoRedorCadaver(posicaoCadaver);
 
             if (tilemapCampo.HasTile(tilemapCampo.WorldToCell(posicaoAleatoria)))
             {
@@ -36,7 +36,7 @@ public class Ecossistema : MonoBehaviour
         Destroy(cadaver, tempoDesaparecimento);
     }
 
-    private Vector3 GerarPosicaoAleatoria(Vector3 posicaoCadaver)
+    private Vector3 GerarPosicaoAleatoriaAoRedorCadaver(Vector3 posicaoCadaver)
     {
         float anguloAleatorio = Random.Range(0f, 360f);
         float raio = Random.Range(0f, raioSpawnCogumelo);

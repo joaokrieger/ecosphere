@@ -12,9 +12,7 @@ public class PontoVida : MonoBehaviour
         float valorX = transform.position.x;
         float valorY = transform.position.y;
         alvo = new Vector3(valorX, valorY + 50f, transform.position.z);
-
-        GameObject somManager = GameObject.FindWithTag("SomManager");
-        somManager.GetComponent<SomManager>().TocarSom(SomManager.TipoSom.PontoDeVida);
+        AudioManager.instance.PlayEfeito("PontoVida");
     }
 
     void Update()
