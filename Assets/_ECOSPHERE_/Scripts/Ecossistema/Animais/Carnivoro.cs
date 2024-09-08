@@ -45,7 +45,7 @@ public class Carnivoro : Animal
                     StartCoroutine(AtacarPresa());
                 }
             }
-            else
+            else if(!esperandoRonda)
             {
                 RealizarRonda();
             }
@@ -115,7 +115,7 @@ public class Carnivoro : Animal
         Animal animal = colider.GetComponent<Animal>();
         if (animal != null)
         {
-            if (animal.especie == this.especie && parceiroAcasalamento == null && (tempoReproducao <= intervaloReproducao && animal.tempoReproducao <= animal.intervaloReproducao))
+            if (animal.especie == this.especie && parceiroAcasalamento == null && animal.EstaVivo() && (tempoReproducao <= intervaloReproducao && animal.tempoReproducao <= animal.intervaloReproducao))
             {
                 parceiroAcasalamento = colider.gameObject;
                 animal.parceiroAcasalamento = gameObject;

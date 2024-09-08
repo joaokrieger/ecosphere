@@ -1,6 +1,6 @@
 public class CarteiraPontoVida
 {
-    private int saldo = 999;
+    private int saldo = 6;
 
     public void AdicionaSaldo(int valor)
     {

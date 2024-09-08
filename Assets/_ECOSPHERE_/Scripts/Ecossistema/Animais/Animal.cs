@@ -27,6 +27,7 @@ public abstract class Animal : MonoBehaviour
 
     protected float saciedade;
     protected bool morreu = false;
+    protected bool esperandoRonda = false;
    
     protected NavMeshAgent navMeshAgent;
 
@@ -61,7 +62,7 @@ public abstract class Animal : MonoBehaviour
     {
         if (!navMeshAgent.pathPending && !navMeshAgent.hasPath || navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            this.LocomoverDestinoAleatorio();
+            StartCoroutine(PausarAntesDaProximaRonda());
         }
     }
 
@@ -113,7 +114,7 @@ public abstract class Animal : MonoBehaviour
         {
             parceiroAcasalamento = null;
             GameObject filhote = Instantiate(this.gameObject, transform.position, Quaternion.identity);
-            filhote.transform.localScale = transform.localScale * 0.75f;
+            //filhote.transform.localScale = transform.localScale * 0.75f;
 
             Animal filhoteAnimal = filhote.GetComponent<Animal>();
             filhoteAnimal.vida = this.vida / 2;
@@ -139,6 +140,14 @@ public abstract class Animal : MonoBehaviour
                 this.Morrer();
             }
         }
+    }
+
+    private IEnumerator PausarAntesDaProximaRonda()
+    {
+        esperandoRonda = true;
+        yield return new WaitForSeconds(Random.Range(2f, 5f));
+        this.LocomoverDestinoAleatorio();
+        esperandoRonda = false;
     }
 
     public void ReceberDano(int quantidade)
@@ -168,4 +177,5 @@ public abstract class Animal : MonoBehaviour
         GameController.GetInstance().GetCarteiraPontoVida().AdicionaSaldo(pontos);
         Instantiate(pontoVidaPrefab, gameObject.transform.position, Quaternion.identity);
     }
+
 }

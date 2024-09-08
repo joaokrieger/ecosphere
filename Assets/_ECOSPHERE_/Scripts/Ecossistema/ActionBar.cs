@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ActionBar : MonoBehaviour
 {
-    public GameObject subActionBar;
-    private bool estaExibindoSubActionBar = false;
+    public GameObject biodex;
 
     private SceneHandler sceneHandler;
 
@@ -15,10 +14,9 @@ public class ActionBar : MonoBehaviour
         sceneHandler = sceneHandlerObject.GetComponent<SceneHandler>();
     }
 
-    public void RenderizaSubActionBar()
+    public void RenderizaBiodex()
     {
-        estaExibindoSubActionBar = !estaExibindoSubActionBar;
-        subActionBar.SetActive(estaExibindoSubActionBar);
+        biodex.SetActive(!biodex.activeSelf);
     }
 
     public void NavegarParaMenu()

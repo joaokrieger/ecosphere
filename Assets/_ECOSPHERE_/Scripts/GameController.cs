@@ -19,6 +19,7 @@ public class GameController
 
     public enum Entidade
     {
+        Animais,
         Carnivoro,
         Herbivoro,
         Produtor
@@ -59,6 +60,8 @@ public class GameController
                 return quantidadeHerbivoro;
             case Entidade.Produtor:
                 return quantidadeProdutor;
+            case Entidade.Animais:
+                return quantidadeHerbivoro + quantidadeCarnivoro;
             default:
                 return 0;
         }
