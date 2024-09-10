@@ -10,7 +10,7 @@ public class Carnivoro : Animal
     public float distanciaAtaque;
     public float velocidadeAtaque;
 
-    private GameObject presaAlvo;
+    public GameObject presaAlvo;
     private bool atacandoPresa = false;
     private Animator animator;
 

@@ -7,7 +7,7 @@ public class Herbivoro : Animal
     [Header("Configurações da Presa")]
     public float distanciaConsumoGrama;
 
-    private GameObject gramaAlvo;
+    public GameObject gramaAlvo;
     private bool consumindoGrama = false;
     private Animator animator;
 

@@ -25,7 +25,7 @@ public abstract class Animal : MonoBehaviour
     public float tempoReproducao;
     public GameObject parceiroAcasalamento;
 
-    protected float saciedade;
+    public float saciedade;
     protected bool morreu = false;
     protected bool esperandoRonda = false;
    
