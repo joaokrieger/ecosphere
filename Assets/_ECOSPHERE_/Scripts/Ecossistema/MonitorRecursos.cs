@@ -15,14 +15,15 @@ public class MonitorRecursos : MonoBehaviour
     void Update()
     {
 
-        int quantidadeCarnivoro = GameController.GetInstance().GetQuantidade(GameController.Entidade.Carnivoro);
-        int quantidadeHerbivoro = GameController.GetInstance().GetQuantidade(GameController.Entidade.Herbivoro);
-        int quantidadeProdutor = GameController.GetInstance().GetQuantidade(GameController.Entidade.Produtor);
+        int quantidadeCarnivoro = GameObject.FindGameObjectsWithTag("Predador").Length;
+        int quantidadeHerbivoro = GameObject.FindGameObjectsWithTag("Presa").Length;
+        int quantidadeProdutor = GameObject.FindGameObjectsWithTag("Grama").Length;
+        int saldoPontoVida = GameManager.Instance.GetSaldo();
 
         indicadorCarnivoros.GetComponent<Text>().text = quantidadeCarnivoro.ToString();
         indicadorHerbivoros.GetComponent<Text>().text = quantidadeHerbivoro.ToString();
         indicadorProdutores.GetComponent<Text>().text = quantidadeProdutor.ToString();
         indicadorPopulacao.GetComponent<Text>().text = (quantidadeCarnivoro + quantidadeHerbivoro).ToString();
-        indicadorPontoVida.GetComponent<Text>().text = GameController.GetInstance().GetCarteiraPontoVida().GetSaldo().ToString();
+        indicadorPontoVida.GetComponent<Text>().text = saldoPontoVida.ToString();
     }
 }

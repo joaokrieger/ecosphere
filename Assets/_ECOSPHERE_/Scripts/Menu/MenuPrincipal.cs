@@ -17,12 +17,13 @@ public class MenuPrincipal : MonoBehaviour
 
     public void NovoJogo()
     {
+        GameManager.Instance.ExcluirArquivoJson();
         sceneHandler.NavegarParaEcossistema();
     }
 
     public void CarregarJogo()
     {
-
+        sceneHandler.NavegarParaEcossistema();
     }
 
     public void SobreJogo()
@@ -32,6 +33,6 @@ public class MenuPrincipal : MonoBehaviour
 
     public void SairDoJogo()
     {
-
+        Application.Quit();
     }
 }

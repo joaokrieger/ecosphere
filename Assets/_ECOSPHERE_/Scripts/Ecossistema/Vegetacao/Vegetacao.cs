@@ -13,6 +13,7 @@ public class Vegetacao : MonoBehaviour
 
     private Tilemap tilemapCampo;
     private Tilemap tilemapEstrutura;
+    private int gramaSpawnada;
 
     void Start()
     {
@@ -23,10 +24,14 @@ public class Vegetacao : MonoBehaviour
         StartCoroutine(RotinaSpawnGrama());
     }
 
+    void Update()
+    {
+        gramaSpawnada = GameObject.FindGameObjectsWithTag("Grama").Length;
+    }
+
     IEnumerator RotinaSpawnGrama()
     {
-        int gramaSpawnada = 0;
-
+         
         while (gramaSpawnada < numeroDeGrama)
         {
             // Gera uma posição aleatória dentro da área de spawn
@@ -39,7 +44,6 @@ public class Vegetacao : MonoBehaviour
             {
                 Vector3 posicaoSpawn = tilemapCampo.CellToWorld(posicaoCelula) + tilemapCampo.tileAnchor;
                 SpawnAnimal.SpawnGrama(gramaPrefab, posicaoSpawn);
-                gramaSpawnada++;
                 yield return new WaitForSeconds(intervaloSpawn);
             }
         }

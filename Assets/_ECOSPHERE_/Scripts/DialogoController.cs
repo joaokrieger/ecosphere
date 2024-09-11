@@ -12,14 +12,6 @@ public class DialogoController : MonoBehaviour
     public float tempoExibicao = 5f;
     private bool permitePular;
 
-    Dictionary<string, bool> conquistas = new Dictionary<string, bool>()
-    {
-        { "populacaoFase01", false },
-        { "populacaoFase02", false },
-        { "populacaoFase03", false },
-        { "populacaoFase04", false }
-    };
-
     void Start()
     {
         GameObject sceneHandlerObject = GameObject.FindGameObjectWithTag("SceneHandler");
@@ -33,37 +25,6 @@ public class DialogoController : MonoBehaviour
         {
             painelMensagemDialogo.SetActive(false);
             painelPermitePular.SetActive(false);
-        }
-
-        VerificaConquistas();
-    }
-
-    private void VerificaConquistas()
-    {
-        int quantidadeAnimais = GameController.GetInstance().GetQuantidade(GameController.Entidade.Animais);
-        if (quantidadeAnimais == 10 && !conquistas["populacaoFase01"])
-        {
-            conquistas["populacaoFase01"] = true;
-            string mensagem = "Você atingiu um nível populacional significativo! Responda à avaliação ecológica para continuar...";
-            StartCoroutine(RequisitarAvalicao(mensagem));
-        }
-        else if (quantidadeAnimais == 20 && !conquistas["populacaoFase02"])
-        {
-            conquistas["populacaoFase02"] = true;
-            string mensagem = "Você atingiu um nível populacional significativo! Responda à avaliação ecológica para continuar...";
-            StartCoroutine(RequisitarAvalicao(mensagem));
-        }
-        else if (quantidadeAnimais == 30 && !conquistas["populacaoFase03"])
-        {
-            conquistas["populacaoFase03"] = true;
-            string mensagem = "Você atingiu um nível populacional significativo! Responda à avaliação ecológica para continuar...";
-            StartCoroutine(RequisitarAvalicao(mensagem));
-        }
-        else if (quantidadeAnimais == 40 && !conquistas["populacaoFase04"])
-        {
-            conquistas["populacaoFase04"] = true;
-            string mensagem = "Você atingiu um nível populacional significativo! Responda à avaliação ecológica para continuar...";
-            StartCoroutine(RequisitarAvalicao(mensagem));
         }
     }
 

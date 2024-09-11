@@ -2,40 +2,71 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class SaveLoadGame : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
     public GameObject[] prefabEspecies;
-    private string enderecoArquivoJson; 
+    public GameObject gramaPrefab;
+    private string enderecoArquivoJson;
+    private int saldo = 999;
 
     [System.Serializable]
     public class GameData
     {
         public CarnivoroData[] carnivorosData;
         public HerbivoroData[] herbivorosData;
+        public GramaData[] gramasData;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); 
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "SimuladorEcossistema")
+        {
+            CarregarJogo();
+        }
+    }
+
+    private void Start()
     {
         enderecoArquivoJson = Path.Combine(Application.persistentDataPath, "gameData.json");
     }
 
     public void SalvarJogo()
     {
-
         CarnivoroData[] carnivorosData = GetCarnivorosData();
         HerbivoroData[] herbivorosData = GetHerbivorosData();
+        GramaData[] gramasData = GetGramasData();
         GameData gameData = new GameData
         {
             carnivorosData = carnivorosData,
-            herbivorosData = herbivorosData
+            herbivorosData = herbivorosData,
+            gramasData = gramasData
         };
 
         string json = JsonUtility.ToJson(gameData, true);
         File.WriteAllText(enderecoArquivoJson, json);
-        Debug.Log($"Arquivo JSON salvo em: {enderecoArquivoJson}");
+        Debug.Log($"Jogo salvo em: {enderecoArquivoJson}");
     }
 
     public void CarregarJogo()
@@ -52,8 +83,28 @@ public class SaveLoadGame : MonoBehaviour
 
             foreach (HerbivoroData herbivoroData in gameData.herbivorosData)
             {
-                InstanciarHebivoro(herbivoroData);
+                InstanciarHerbivoro(herbivoroData);
             }
+
+            foreach (GramaData gramaData in gameData.gramasData)
+            {
+                InstanciarGrama(gramaData);
+            }
+
+            Debug.Log("Jogo carregado com sucesso.");
+        }
+        else
+        {
+            Debug.LogWarning("Nenhum arquivo de jogo salvo encontrado.");
+        }
+    }
+
+    public void ExcluirArquivoJson()
+    {
+        if (File.Exists(enderecoArquivoJson))
+        {
+            File.Delete(enderecoArquivoJson);
+            Debug.Log("Arquivo JSON excluído.");
         }
     }
 
@@ -97,6 +148,25 @@ public class SaveLoadGame : MonoBehaviour
         return herbivorosData;
     }
 
+    private GramaData[] GetGramasData()
+    {
+        GameObject[] gramas = GameObject.FindGameObjectsWithTag("Grama");
+        GramaData[] gramasData = new GramaData[gramas.Length];
+
+        for (int i = 0; i < gramas.Length; i++)
+        {
+            GameObject gramaGO = gramas[i];
+  
+            if (gramaGO != null)
+            {
+                GramaData gramaData = new GramaData(gramaGO);
+                gramasData[i] = gramaData;
+            }
+        }
+
+        return gramasData;
+    }
+
     private void InstanciarCarnivoro(CarnivoroData carnivoroData)
     {
         if (Enum.TryParse(carnivoroData.especie, out Especie especie))
@@ -133,9 +203,8 @@ public class SaveLoadGame : MonoBehaviour
         }
     }
 
-    private void InstanciarHebivoro(HerbivoroData herbivoroData)
+    private void InstanciarHerbivoro(HerbivoroData herbivoroData)
     {
-
         if (Enum.TryParse(herbivoroData.especie, out Especie especie))
         {
             GameObject herbivoroGO = Instantiate(GetPrefabPorEspecie(especie), herbivoroData.position, Quaternion.identity);
@@ -156,8 +225,34 @@ public class SaveLoadGame : MonoBehaviour
         }
     }
 
+    private void InstanciarGrama(GramaData gramaData)
+    {
+        GameObject gramaGO = Instantiate(gramaPrefab, gramaData.position, Quaternion.identity);
+    }
+
     private GameObject GetPrefabPorEspecie(Especie especie)
     {
         return prefabEspecies[(int)especie];
+    }
+
+    public void AdicionaSaldo(int valor)
+    {
+        saldo += valor;
+    }
+
+    public bool RemoveSaldo(int valor)
+    {
+        if ((saldo - valor) >= 0)
+        {
+            saldo -= valor;
+            return true;
+        }
+
+        return false;
+    }
+
+    public int GetSaldo()
+    {
+        return this.saldo;
     }
 }

@@ -15,7 +15,6 @@ public class Herbivoro : Animal
     {
         base.Start();
         animator = GetComponent<Animator>();
-        GameController.GetInstance().Add(GameController.Entidade.Herbivoro);
     }
 
     protected virtual void Update()
@@ -114,6 +113,5 @@ public class Herbivoro : Animal
     {
         base.Morrer();
         animator.SetTrigger("morreu");
-        GameController.GetInstance().Remove(GameController.Entidade.Herbivoro);
     }
 }

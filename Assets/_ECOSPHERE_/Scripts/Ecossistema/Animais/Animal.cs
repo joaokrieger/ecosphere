@@ -174,7 +174,7 @@ public abstract class Animal : MonoBehaviour
 
     public void RenderPontoVida(int pontos)
     {
-        GameController.GetInstance().GetCarteiraPontoVida().AdicionaSaldo(pontos);
+        GameManager.Instance.AdicionaSaldo(pontos);
         Instantiate(pontoVidaPrefab, gameObject.transform.position, Quaternion.identity);
     }
 

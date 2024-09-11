@@ -16,7 +16,7 @@ public class SpawnAnimal : MonoBehaviour
     public bool VerificaSaldoSpawn(GameObject prefab)
     {
         Animal animal = prefab.GetComponent<Animal>();
-        if (GameController.GetInstance().GetCarteiraPontoVida().RemoveSaldo(animal.GetPrecoSpawn()))
+        if (GameManager.Instance.RemoveSaldo(animal.GetPrecoSpawn()))
         {
             return true;
         }
@@ -74,6 +74,5 @@ public class SpawnAnimal : MonoBehaviour
     public static void SpawnGrama(GameObject gramaPrefab, Vector3 posicaoSpawn)
     {
         Instantiate(gramaPrefab, posicaoSpawn, Quaternion.identity);
-        GameController.GetInstance().Add(GameController.Entidade.Produtor);
     }
 }
