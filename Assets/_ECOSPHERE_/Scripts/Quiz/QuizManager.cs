@@ -28,7 +28,13 @@ public class QuizManager : MonoBehaviour
 
     public IEnumerator RespostaCorreta()
     {
-        yield return new WaitForSeconds(1f);
+        AudioManager.instance.PlayEfeito("RespostaCorreta");
+        for (int i = 0; i < opcoes.Length; i++)
+        {
+            opcoes[i].GetComponent<Button>().interactable = false;
+        }
+
+        yield return new WaitForSeconds(2f);
         if (perguntas.Count > 1)
         {
             perguntas.RemoveAt(questaoAtual);
@@ -43,13 +49,14 @@ public class QuizManager : MonoBehaviour
 
     public void RespostaErrada()
     {
-
+        AudioManager.instance.PlayEfeito("RespostaErrada");
     }
 
     public void GerarRespostas()
     {
         for (int i = 0; i < opcoes.Length; i++) {
             opcoes[i].GetComponent<Resposta>().estaCorreta = false;
+            opcoes[i].GetComponent<Button>().interactable = true;
             opcoes[i].transform.GetChild(0).GetComponent<Text>().text = perguntas[questaoAtual].respostas[i];
 
             if (perguntas[questaoAtual].repostaCorreta == i+1)

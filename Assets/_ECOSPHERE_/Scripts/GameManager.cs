@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public GameObject[] prefabEspecies;
     public GameObject gramaPrefab;
+    public Fase faseAtual;
+
     private string enderecoArquivoJson;
     private int saldo = 999;
 
@@ -254,5 +256,10 @@ public class GameManager : MonoBehaviour
     public int GetSaldo()
     {
         return this.saldo;
+    }
+
+    public void AtualizarFase(Fase novaFase)
+    {
+        faseAtual = novaFase;
     }
 }

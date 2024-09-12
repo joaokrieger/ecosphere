@@ -28,6 +28,7 @@ public class SceneHandler : MonoBehaviour
         fader.gameObject.SetActive(true);
         LeanTween.alpha(fader, 0, 0);
         LeanTween.alpha(fader, 1, 1f).setOnComplete(() => {
+            GameManager.Instance.SalvarJogo();
             SceneManager.LoadScene("AvaliacaoEcologica");
         });
     }
