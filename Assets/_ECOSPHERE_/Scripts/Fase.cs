@@ -1,8 +1,8 @@
 public enum Fase
 {
-    Introducao,
-    Fase1,
-    Fase2,
-    Fase3,
-    Final
+    Fase01,
+    Fase02,
+    Fase03,
+    Fase04,
+    Fase05
 }

@@ -9,8 +9,8 @@ public class DialogoController : MonoBehaviour
     public GameObject painelMensagemDialogo;
     public Text textoDialogo;
     public GameObject painelPermitePular;
-    public float tempoExibicao = 5f;
-    public float intervaloAvaliacao = 20f; // 2 minutos
+    public TutorialController tutorialController;
+    private float intervaloAvaliacao = 120f; // 2 minutos 
     private bool permitePular;
 
     void Start()
@@ -18,7 +18,7 @@ public class DialogoController : MonoBehaviour
         GameObject sceneHandlerObject = GameObject.FindGameObjectWithTag("SceneHandler");
         sceneHandler = sceneHandlerObject.GetComponent<SceneHandler>();
         StartCoroutine(RequisitarAvaliacoesPeriodicamente());
-        if (GameManager.Instance.faseAtual == Fase.Introducao)
+        if (GameManager.Instance.faseAtual == Fase.Fase01)
         {
             StartCoroutine(MensagemInicial());
         }
@@ -30,6 +30,7 @@ public class DialogoController : MonoBehaviour
         {
             painelMensagemDialogo.SetActive(false);
             painelPermitePular.SetActive(false);
+            tutorialController.ShowTutorialSpawnCoelho();
         }
     }
 
@@ -38,21 +39,19 @@ public class DialogoController : MonoBehaviour
         string mensagem = "Bem-vindo ao Ecosphere, um mundo onde a natureza precisa da sua ajuda.\n\n Boa sorte nesta nova jornada meu jovem!";
         ExibirMensagem(mensagem);
 
-        yield return new WaitForSeconds(tempoExibicao);
+        yield return new WaitForSeconds(10f);
 
-        mensagem = "Restaure o equilibrio natural deste ecossistema. \n\nAdicione novas especies e descubra como cada uma delas contribui para o funcionamento harmonioso do ambiente";
+        mensagem = "Restaure o equilibrio natural deste ecossistema! \n\nAdicione novas especies e descubra como cada uma delas contribui para o funcionamento harmonioso do ambiente.";
         ExibirMensagem(mensagem);
 
-        yield return new WaitForSeconds(tempoExibicao);
-
-        GameManager.Instance.AtualizarFase(Fase.Fase1);
-        StartCoroutine(HabilitaPular());
+        yield return new WaitForSeconds(10f);
+        HabilitaPular();
     }
 
     private IEnumerator RequisitarAvalicao(string mensagem)
     {
         ExibirMensagem(mensagem);
-        yield return new WaitForSeconds(tempoExibicao);
+        yield return new WaitForSeconds(10f);
         sceneHandler.NavegarParaAvaliacaoEcologica();
     }
 
@@ -70,9 +69,8 @@ public class DialogoController : MonoBehaviour
         painelMensagemDialogo.SetActive(true);
     }
 
-    private IEnumerator HabilitaPular()
+    private void HabilitaPular()
     {
-        yield return new WaitForSeconds(tempoExibicao);
         permitePular = true;
         painelPermitePular.SetActive(true);
     }

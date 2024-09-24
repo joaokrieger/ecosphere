@@ -24,6 +24,12 @@ public abstract class Animal : MonoBehaviour
     public float intervaloReproducao;
     public float tempoReproducao;
     public GameObject parceiroAcasalamento;
+    private float tempoVida;
+
+    [Header("Configurações de Animal")]
+    private GameObject emoteMorte;
+    private GameObject emoteReproducao;
+    private GameObject emoteFome;
 
     public float saciedade;
     protected bool morreu = false;
@@ -39,8 +45,13 @@ public abstract class Animal : MonoBehaviour
         navMeshAgent.updateUpAxis = false;
 
         ecossistema = FindObjectOfType<Ecossistema>();
-        saciedade = tempoFome;
         tempoReproducao = intervaloReproducao * 2;
+
+        emoteMorte = transform.Find("EmoteMorte").gameObject;
+        emoteReproducao = transform.Find("EmoteReproducao").gameObject;
+        emoteFome = transform.Find("EmoteFome").gameObject;
+
+        tempoVida = Random.Range(120f, 240f);
     }
 
     protected void Update()
@@ -48,6 +59,35 @@ public abstract class Animal : MonoBehaviour
         VerificaFome();
         CorrigeLocomocao();
         tempoReproducao -= Time.deltaTime;
+        tempoVida -= Time.deltaTime;
+
+        if (tempoVida <= 0 && !morreu)
+        {
+            Morrer();
+        }
+
+        if (morreu)
+        {
+            ExibirEmote(EmoteAnimal.Morte);
+        }
+        else if(tempoFome <= tempoApetite)
+        {
+            ExibirEmote(EmoteAnimal.Fome);
+        }
+        else if (parceiroAcasalamento != null)
+        {
+
+            if (!parceiroAcasalamento.GetComponent<Animal>().EstaVivo())
+            {
+                parceiroAcasalamento = null;
+            }
+
+            ExibirEmote(EmoteAnimal.Reproducao);
+        }
+        else
+        {
+            ExibirEmote(EmoteAnimal.Padrao);
+        }
     }
 
     protected virtual void Morrer()
@@ -60,7 +100,7 @@ public abstract class Animal : MonoBehaviour
 
     public virtual void RealizarRonda()
     {
-        if (!navMeshAgent.pathPending && !navMeshAgent.hasPath || navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        if (!navMeshAgent.pathPending && !navMeshAgent.hasPath || navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance || navMeshAgent.velocity.sqrMagnitude < 0.1f && navMeshAgent.hasPath)
         {
             StartCoroutine(PausarAntesDaProximaRonda());
         }
@@ -110,19 +150,27 @@ public abstract class Animal : MonoBehaviour
 
     public void Reproduzir()
     {
-        if (EstaVivo() && parceiroAcasalamento != null)
+        if (EstaVivo() && (parceiroAcasalamento != null && parceiroAcasalamento.GetComponent<Animal>().EstaVivo()))
         {
-            parceiroAcasalamento = null;
-            GameObject filhote = Instantiate(this.gameObject, transform.position, Quaternion.identity);
-            //filhote.transform.localScale = transform.localScale * 0.75f;
 
-            Animal filhoteAnimal = filhote.GetComponent<Animal>();
-            filhoteAnimal.vida = this.vida / 2;
-            filhoteAnimal.tempoFome = this.saciedade;
             tempoReproducao = intervaloReproducao * 2;
-            filhoteAnimal.tempoReproducao = this.tempoReproducao;
 
-            RenderPontoVida(rendaReproducao);
+            // Garantir que apenas um dos dois crie o filhote
+            if (this.GetInstanceID() < parceiroAcasalamento.GetInstanceID())
+            {
+                parceiroAcasalamento = null;
+                GameObject filhote = Instantiate(this.gameObject, transform.position, Quaternion.identity);
+                Animal filhoteAnimal = filhote.GetComponent<Animal>();
+                filhoteAnimal.vida = this.vida;
+                filhoteAnimal.tempoVida = Random.Range(120f, 240f);
+                filhoteAnimal.tempoFome = this.saciedade;
+                filhoteAnimal.tempoReproducao = this.tempoReproducao;
+                RenderPontoVida(rendaReproducao);
+            }
+            else
+            {
+                parceiroAcasalamento = null;
+            }
         }
     }
 
@@ -145,7 +193,16 @@ public abstract class Animal : MonoBehaviour
     private IEnumerator PausarAntesDaProximaRonda()
     {
         esperandoRonda = true;
-        yield return new WaitForSeconds(Random.Range(2f, 5f));
+
+        if (tempoFome <= tempoApetite)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(Random.Range(2f, 5f));
+        }
+
         this.LocomoverDestinoAleatorio();
         esperandoRonda = false;
     }
@@ -178,4 +235,23 @@ public abstract class Animal : MonoBehaviour
         Instantiate(pontoVidaPrefab, gameObject.transform.position, Quaternion.identity);
     }
 
+    public void ExibirEmote(EmoteAnimal tipoEmote)
+    {
+        emoteFome.SetActive(false);
+        emoteMorte.SetActive(false);
+        emoteReproducao.SetActive(false);
+
+        switch (tipoEmote)
+        {
+            case EmoteAnimal.Fome:
+                emoteFome.SetActive(true);
+                break;
+            case EmoteAnimal.Morte:
+                emoteMorte.SetActive(true);
+                break;
+            case EmoteAnimal.Reproducao:
+                emoteReproducao.SetActive(true);
+                break;
+        }
+    }
 }

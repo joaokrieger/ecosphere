@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public Fase faseAtual;
 
     private string enderecoArquivoJson;
-    private int saldo = 999;
+    private int saldo = 100;
 
     [System.Serializable]
     public class GameData
@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
         public CarnivoroData[] carnivorosData;
         public HerbivoroData[] herbivorosData;
         public GramaData[] gramasData;
+        public EcossistemaData ecossistemaData;
     }
 
     private void Awake()
@@ -59,11 +60,13 @@ public class GameManager : MonoBehaviour
         CarnivoroData[] carnivorosData = GetCarnivorosData();
         HerbivoroData[] herbivorosData = GetHerbivorosData();
         GramaData[] gramasData = GetGramasData();
+        EcossistemaData ecossistemaData = new EcossistemaData();
         GameData gameData = new GameData
         {
             carnivorosData = carnivorosData,
             herbivorosData = herbivorosData,
-            gramasData = gramasData
+            gramasData = gramasData,
+            ecossistemaData = ecossistemaData
         };
 
         string json = JsonUtility.ToJson(gameData, true);
@@ -91,6 +94,12 @@ public class GameManager : MonoBehaviour
             foreach (GramaData gramaData in gameData.gramasData)
             {
                 InstanciarGrama(gramaData);
+            }
+
+            SetSaldo(gameData.ecossistemaData.pontosVida);
+            if (this.faseAtual == null && Enum.TryParse(gameData.ecossistemaData.fase, out Fase fase))
+            {
+                AtualizarFase(fase);
             }
 
             Debug.Log("Jogo carregado com sucesso.");
@@ -258,8 +267,40 @@ public class GameManager : MonoBehaviour
         return this.saldo;
     }
 
+    private void SetSaldo(int saldo) {
+        this.saldo = saldo;
+    }
+
     public void AtualizarFase(Fase novaFase)
     {
-        faseAtual = novaFase;
+        if (novaFase != null)
+        {
+            faseAtual = novaFase;
+        }
+    }
+
+    public Fase GetNextFase()
+    {
+        if (faseAtual == Fase.Fase01)
+        {
+            return Fase.Fase02;
+        }
+
+        if (faseAtual == Fase.Fase02)
+        {
+            return Fase.Fase03;
+        }
+
+        if (faseAtual == Fase.Fase03)
+        {
+            return Fase.Fase04;
+        }
+
+        if (faseAtual == Fase.Fase04)
+        {
+            return Fase.Fase05;
+        }
+
+        return faseAtual;
     }
 }

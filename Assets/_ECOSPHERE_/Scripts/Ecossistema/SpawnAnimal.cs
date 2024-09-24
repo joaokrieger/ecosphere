@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class SpawnAnimal : MonoBehaviour
 {
-
     public GameObject coelhoPrefab;
     public GameObject raposaPrefab;
     public GameObject javaliPrefab;
     public GameObject loboPrefab;
     public GameObject ursoPrefab;
     public GameObject cervoPrefab;
+
     public Vector3 spawnPosition;
+    public float spawnRadius = 5f;
+
+    private Vector3 GetRandomSpawnPosition()
+    {
+        Vector2 randomPoint = Random.insideUnitCircle * spawnRadius;
+
+        Vector3 randomPosition = spawnPosition + new Vector3(randomPoint.x, randomPoint.y, 0);
+        return randomPosition;
+    }
 
     public bool VerificaSaldoSpawn(GameObject prefab)
     {
@@ -27,7 +36,7 @@ public class SpawnAnimal : MonoBehaviour
     {
         if (VerificaSaldoSpawn(ursoPrefab))
         {
-            Instantiate(ursoPrefab, spawnPosition, Quaternion.identity);
+            Instantiate(ursoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
         }
     }
 
@@ -35,7 +44,7 @@ public class SpawnAnimal : MonoBehaviour
     {
         if (VerificaSaldoSpawn(loboPrefab))
         {
-            Instantiate(loboPrefab, spawnPosition, Quaternion.identity);
+            Instantiate(loboPrefab, GetRandomSpawnPosition(), Quaternion.identity);
         }
     }
 
@@ -43,7 +52,7 @@ public class SpawnAnimal : MonoBehaviour
     {
         if (VerificaSaldoSpawn(coelhoPrefab))
         {
-            Instantiate(coelhoPrefab, spawnPosition, Quaternion.identity);
+            Instantiate(coelhoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
         }
     }
 
@@ -51,7 +60,7 @@ public class SpawnAnimal : MonoBehaviour
     {
         if (VerificaSaldoSpawn(raposaPrefab))
         {
-            Instantiate(raposaPrefab, spawnPosition, Quaternion.identity);
+            Instantiate(raposaPrefab, GetRandomSpawnPosition(), Quaternion.identity);
         }
     }
 
@@ -59,15 +68,15 @@ public class SpawnAnimal : MonoBehaviour
     {
         if (VerificaSaldoSpawn(javaliPrefab))
         {
-            Instantiate(javaliPrefab, spawnPosition, Quaternion.identity);
+            Instantiate(javaliPrefab, GetRandomSpawnPosition(), Quaternion.identity);
         }
     }
 
     public void SpawnCervo()
     {
         if (VerificaSaldoSpawn(cervoPrefab))
-        { 
-            Instantiate(cervoPrefab, spawnPosition, Quaternion.identity);
+        {
+            Instantiate(cervoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
         }
     }
 
