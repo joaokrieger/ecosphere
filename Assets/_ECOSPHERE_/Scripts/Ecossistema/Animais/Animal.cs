@@ -32,9 +32,11 @@ public abstract class Animal : MonoBehaviour
     private GameObject emoteFome;
 
     public float saciedade;
+
     protected bool morreu = false;
+    protected bool alvo = false;
     protected bool esperandoRonda = false;
-   
+
     protected NavMeshAgent navMeshAgent;
 
     protected void Start()
@@ -70,10 +72,6 @@ public abstract class Animal : MonoBehaviour
         {
             ExibirEmote(EmoteAnimal.Morte);
         }
-        else if(tempoFome <= tempoApetite)
-        {
-            ExibirEmote(EmoteAnimal.Fome);
-        }
         else if (parceiroAcasalamento != null)
         {
 
@@ -83,6 +81,10 @@ public abstract class Animal : MonoBehaviour
             }
 
             ExibirEmote(EmoteAnimal.Reproducao);
+        }
+        else if (tempoFome <= tempoApetite)
+        {
+            ExibirEmote(EmoteAnimal.Fome);
         }
         else
         {
@@ -108,26 +110,30 @@ public abstract class Animal : MonoBehaviour
 
     public virtual void LocomoverDestinoAleatorio()
     {
-        Tilemap tilemapCampo = GameObject.FindWithTag("Campo").GetComponent<Tilemap>();
-        BoundsInt bounds = tilemapCampo.cellBounds;
-
-        Vector3 posicaoAleatoria;
-        Vector3Int posicaoCelula;
-
-        do
+        if (!alvo)
         {
-            float randomX = Random.Range(bounds.xMin, bounds.xMax);
-            float randomY = Random.Range(bounds.yMin, bounds.yMax);
-            posicaoAleatoria = new Vector3(randomX, randomY, 0);
-            posicaoCelula = tilemapCampo.WorldToCell(posicaoAleatoria);
-        } while (!tilemapCampo.HasTile(posicaoCelula));
+            Tilemap tilemapCampo = GameObject.FindWithTag("Campo").GetComponent<Tilemap>();
+            BoundsInt bounds = tilemapCampo.cellBounds;
 
-        this.LocomoverPara(posicaoAleatoria);
+            Vector3 posicaoAleatoria;
+            Vector3Int posicaoCelula;
+
+            do
+            {
+                float randomX = Random.Range(bounds.xMin, bounds.xMax);
+                float randomY = Random.Range(bounds.yMin, bounds.yMax);
+                posicaoAleatoria = new Vector3(randomX, randomY, 0);
+                posicaoCelula = tilemapCampo.WorldToCell(posicaoAleatoria);
+            } while (!tilemapCampo.HasTile(posicaoCelula));
+
+
+            this.LocomoverPara(posicaoAleatoria);
+        }
     }
 
     protected virtual void LocomoverPara(Vector3 destination)
     {
-        if (!morreu)
+        if (!morreu && !navMeshAgent.pathPending)
         {
             navMeshAgent.ResetPath();
             navMeshAgent.SetDestination(destination);
@@ -174,7 +180,8 @@ public abstract class Animal : MonoBehaviour
         }
     }
 
-    protected virtual void Comer() {
+    protected virtual void Comer()
+    {
         RenderPontoVida(rendaAlimentacao);
     }
 

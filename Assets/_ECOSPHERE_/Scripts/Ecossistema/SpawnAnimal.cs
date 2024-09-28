@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class SpawnAnimal : MonoBehaviour
 {
+    [Header("Tutorial")]
+    public TutorialController tutorialController;
+
+    [Header("Painel de Prefabs de Animais")]
     public GameObject coelhoPrefab;
     public GameObject raposaPrefab;
     public GameObject javaliPrefab;
@@ -11,6 +15,7 @@ public class SpawnAnimal : MonoBehaviour
     public GameObject ursoPrefab;
     public GameObject cervoPrefab;
 
+    [Header("Posição do Spawn")]
     public Vector3 spawnPosition;
     public float spawnRadius = 5f;
 
@@ -29,6 +34,8 @@ public class SpawnAnimal : MonoBehaviour
         {
             return true;
         }
+
+        tutorialController.ShowTutorialPontoVida();
         return false;
     }
 
@@ -37,6 +44,7 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(ursoPrefab))
         {
             Instantiate(ursoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+            AudioManager.instance.PlayAnimal("Urso");
         }
     }
 
@@ -45,6 +53,7 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(loboPrefab))
         {
             Instantiate(loboPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+            AudioManager.instance.PlayAnimal("Lobo");
         }
     }
 
@@ -53,6 +62,7 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(coelhoPrefab))
         {
             Instantiate(coelhoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+            AudioManager.instance.PlayAnimal("Coelho");
         }
     }
 
@@ -61,6 +71,7 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(raposaPrefab))
         {
             Instantiate(raposaPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+            AudioManager.instance.PlayAnimal("Raposa");
         }
     }
 
@@ -69,6 +80,7 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(javaliPrefab))
         {
             Instantiate(javaliPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+            AudioManager.instance.PlayAnimal("Javali");
         }
     }
 
@@ -77,6 +89,7 @@ public class SpawnAnimal : MonoBehaviour
         if (VerificaSaldoSpawn(cervoPrefab))
         {
             Instantiate(cervoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+            AudioManager.instance.PlayAnimal("Cervo");
         }
     }
 

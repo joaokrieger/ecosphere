@@ -18,6 +18,7 @@ public class Carnivoro : Animal
     {
         base.Start();
         animator = GetComponent<Animator>();
+        presaAlvo = null;
     }
 
     protected virtual void Update()
@@ -44,7 +45,7 @@ public class Carnivoro : Animal
                     StartCoroutine(AtacarPresa());
                 }
             }
-            else if(!esperandoRonda)
+            else if (!esperandoRonda)
             {
                 RealizarRonda();
             }

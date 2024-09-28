@@ -18,21 +18,17 @@ public class Ecossistema : MonoBehaviour
 
     public IEnumerator Decompor(GameObject cadaver)
     {
-        yield return new WaitForSeconds(3f);
+        Destroy(cadaver.GetComponent<BoxCollider2D>());
+        yield return new WaitForSeconds(4f);
 
         Vector3 posicaoCadaver = cadaver.transform.position;
-        int numeroCogumelos = Random.Range(1, 3);
-
-        for (int i = 0; i < numeroCogumelos; i++)
+        Vector3 posicaoAleatoria = GerarPosicaoAleatoriaAoRedorCadaver(posicaoCadaver);
+        if (tilemapCampo.HasTile(tilemapCampo.WorldToCell(posicaoAleatoria)))
         {
-            Vector3 posicaoAleatoria = GerarPosicaoAleatoriaAoRedorCadaver(posicaoCadaver);
-
-            if (tilemapCampo.HasTile(tilemapCampo.WorldToCell(posicaoAleatoria)))
-            {
-                GameObject cogumelo = Instantiate(cogumeloPrefab, posicaoAleatoria, Quaternion.identity);
-                Destroy(cogumelo, tempoDesaparecimento);
-            }
+            GameObject cogumelo = Instantiate(cogumeloPrefab, posicaoAleatoria, Quaternion.identity);
+            Destroy(cogumelo, tempoDesaparecimento);
         }
+
         Destroy(cadaver, tempoDesaparecimento);
     }
 

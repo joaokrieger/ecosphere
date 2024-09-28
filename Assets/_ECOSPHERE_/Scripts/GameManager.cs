@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public Fase faseAtual;
 
     private string enderecoArquivoJson;
-    private int saldo = 100;
+    private int saldo = 70;
 
     [System.Serializable]
     public class GameData

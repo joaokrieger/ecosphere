@@ -10,14 +10,13 @@ public class DialogoController : MonoBehaviour
     public Text textoDialogo;
     public GameObject painelPermitePular;
     public TutorialController tutorialController;
-    private float intervaloAvaliacao = 120f; // 2 minutos 
+    private float intervaloAvaliacao = 220f; // 2 minutos 
     private bool permitePular;
 
     void Start()
     {
         GameObject sceneHandlerObject = GameObject.FindGameObjectWithTag("SceneHandler");
         sceneHandler = sceneHandlerObject.GetComponent<SceneHandler>();
-        StartCoroutine(RequisitarAvaliacoesPeriodicamente());
         if (GameManager.Instance.faseAtual == Fase.Fase01)
         {
             StartCoroutine(MensagemInicial());
@@ -30,18 +29,20 @@ public class DialogoController : MonoBehaviour
         {
             painelMensagemDialogo.SetActive(false);
             painelPermitePular.SetActive(false);
-            tutorialController.ShowTutorialSpawnCoelho();
+            StartCoroutine(tutorialController.ShowTutorialSpawnCoelho());
         }
     }
 
     private IEnumerator MensagemInicial()
     {
-        string mensagem = "Bem-vindo ao Ecosphere, um mundo onde a natureza precisa da sua ajuda.\n\n Boa sorte nesta nova jornada meu jovem!";
+        string mensagem = "Bem-vindo ao Ecosphere, um mundo onde a natureza precisa da sua ajuda.\n\n" +
+            "Boa sorte nesta nova jornada meu jovem!";
         ExibirMensagem(mensagem);
 
         yield return new WaitForSeconds(10f);
 
-        mensagem = "Restaure o equilibrio natural deste ecossistema! \n\nAdicione novas especies e descubra como cada uma delas contribui para o funcionamento harmonioso do ambiente.";
+        mensagem = "Restaure o equilibrio natural deste ecossistema! \n\n" +
+            "Adicione novas especies e descubra como cada uma delas contribui para o funcionamento harmonioso do ambiente.";
         ExibirMensagem(mensagem);
 
         yield return new WaitForSeconds(10f);
@@ -57,7 +58,7 @@ public class DialogoController : MonoBehaviour
 
     private void ExibirMensagem(string mensagem)
     {
-        AudioManager.instance.PlayEfeito("Dialogo");
+        AudioManager.instance.PlayDialogo("Dialogo");
         GameObject[] telas = GameObject.FindGameObjectsWithTag("TelaExibicao");
         foreach (GameObject tela in telas)
         {
@@ -75,7 +76,7 @@ public class DialogoController : MonoBehaviour
         painelPermitePular.SetActive(true);
     }
 
-    private IEnumerator RequisitarAvaliacoesPeriodicamente()
+    public IEnumerator RequisitarAvaliacoesPeriodicamente()
     {
         while (true)
         {

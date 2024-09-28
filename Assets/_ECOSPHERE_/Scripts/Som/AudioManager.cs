@@ -8,8 +8,8 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager instance;
 
-    public Som[] musicas, efeitos;
-    public AudioSource playerMusica, playerEfeito;
+    public Som[] musicas, efeitos, animais, dialogos;
+    public AudioSource playerMusica, playerEfeito, playerAnimais, playerDialogo;
 
     private void Awake()
     {
@@ -48,6 +48,28 @@ public class AudioManager : MonoBehaviour
         {
             playerEfeito.clip = som.clip;
             playerEfeito.Play();
+        }
+    }
+
+    public void PlayDialogo(string nome)
+    {
+
+        Som som = Array.Find(dialogos, x => x.nome == nome);
+        if (som != null)
+        {
+            playerDialogo.clip = som.clip;
+            playerDialogo.Play();
+        }
+    }
+
+    public void PlayAnimal(string nome)
+    {
+
+        Som som = Array.Find(animais, x => x.nome == nome);
+        if (som != null)
+        {
+            playerAnimais.clip = som.clip;
+            playerAnimais.Play();
         }
     }
 }

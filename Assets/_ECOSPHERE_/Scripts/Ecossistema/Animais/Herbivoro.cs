@@ -15,6 +15,7 @@ public class Herbivoro : Animal
     {
         base.Start();
         animator = GetComponent<Animator>();
+        gramaAlvo = null;
     }
 
     protected virtual void Update()
