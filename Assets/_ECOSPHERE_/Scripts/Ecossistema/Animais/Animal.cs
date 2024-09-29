@@ -9,12 +9,6 @@ public abstract class Animal : MonoBehaviour
     [Header("Configurações do Ecossistema")]
     private Ecossistema ecossistema;
 
-    [Header("Configurações da Economia")]
-    public int precoSpawn;
-    public int rendaAlimentacao;
-    public int rendaReproducao;
-    public GameObject pontoVidaPrefab;
-
     [Header("Configurações de Animal")]
     public Especie especie;
     public int vida;
@@ -171,18 +165,12 @@ public abstract class Animal : MonoBehaviour
                 filhoteAnimal.tempoVida = Random.Range(120f, 240f);
                 filhoteAnimal.tempoFome = this.saciedade;
                 filhoteAnimal.tempoReproducao = this.tempoReproducao;
-                RenderPontoVida(rendaReproducao);
             }
             else
             {
                 parceiroAcasalamento = null;
             }
         }
-    }
-
-    protected virtual void Comer()
-    {
-        RenderPontoVida(rendaAlimentacao);
     }
 
     protected void VerificaFome()
@@ -231,17 +219,6 @@ public abstract class Animal : MonoBehaviour
         return !morreu;
     }
 
-    public int GetPrecoSpawn()
-    {
-        return precoSpawn;
-    }
-
-    public void RenderPontoVida(int pontos)
-    {
-        GameManager.Instance.AdicionaSaldo(pontos);
-        Instantiate(pontoVidaPrefab, gameObject.transform.position, Quaternion.identity);
-    }
-
     public void ExibirEmote(EmoteAnimal tipoEmote)
     {
         emoteFome.SetActive(false);
@@ -261,4 +238,6 @@ public abstract class Animal : MonoBehaviour
                 break;
         }
     }
+
+    protected virtual void Comer() { }
 }

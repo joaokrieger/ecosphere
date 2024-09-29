@@ -26,6 +26,9 @@ public class TutorialController : MonoBehaviour
     public GameObject painelSpawnCervo;
     public GameObject painelSpawnUrso;
 
+    [Header("Painel Bloqueio")]
+    public GameObject painelBloqueio;
+
     private bool tutorialSpawnCoelho = false;
     private bool tutorialSpawnRaposa = false;
     private bool tutorialSpawnJavali = false;
@@ -36,6 +39,8 @@ public class TutorialController : MonoBehaviour
     public bool javaliMissaoConcluida = false;
     public bool loboMissaoConcluida = false;
 
+    public bool missaoAvaliacaoEcologica = false;
+
     private const int requisitoCoelho = 10;
     private const int requisitoRaposa = 2;
     private const int requisitoJavali = 4;
@@ -43,48 +48,57 @@ public class TutorialController : MonoBehaviour
 
     void Update()
     {
-        if (tutorialSpawnCoelho && !coelhoMissaoConcluida)
-        {
-            AtualizarMissao(Especie.Coelho, requisitoCoelho, () =>
-            {
-                coelhoMissaoConcluida = true;
-                tutorialSpawnCoelho = false;
-                OcultarPainelMissao();
-                StartCoroutine(AguardarETrocarMissao(30f, ShowTutorialSpawnRaposa));
-            });
-        }
 
-        if (tutorialSpawnRaposa && !raposaMissaoConcluida)
+        if (!GameManager.Instance.tutorial)
         {
-            AtualizarMissao(Especie.Raposa, requisitoRaposa, () =>
+            if (tutorialSpawnCoelho && !coelhoMissaoConcluida)
             {
-                raposaMissaoConcluida = true;
-                tutorialSpawnRaposa = false;
-                OcultarPainelMissao();
-                StartCoroutine(AguardarETrocarMissao(20f, ShowTutorialSpawnJavali));
-            });
-        }
+                AtualizarMissao(Especie.Coelho, requisitoCoelho, () =>
+                {
+                    coelhoMissaoConcluida = true;
+                    tutorialSpawnCoelho = false;
+                    OcultarPainelMissao();
+                    StartCoroutine(AguardarETrocarMissao(30f, ShowTutorialSpawnRaposa));
+                });
+            }
 
-        if (tutorialSpawnJavali && !javaliMissaoConcluida)
-        {
-            AtualizarMissao(Especie.Javali, requisitoRaposa, () =>
+            if (tutorialSpawnRaposa && !raposaMissaoConcluida)
             {
-                javaliMissaoConcluida = true;
-                tutorialSpawnJavali = false;
-                OcultarPainelMissao();
-                StartCoroutine(AguardarETrocarMissao(20f, ShowTutorialSpawnLobo));
-            });
-        }
+                AtualizarMissao(Especie.Raposa, requisitoRaposa, () =>
+                {
+                    raposaMissaoConcluida = true;
+                    tutorialSpawnRaposa = false;
+                    OcultarPainelMissao();
+                    StartCoroutine(AguardarETrocarMissao(20f, ShowTutorialSpawnJavali));
+                });
+            }
 
-        if (tutorialSpawnLobo && !loboMissaoConcluida)
-        {
-            AtualizarMissao(Especie.Lobo, requisitoLobo, () =>
+            if (tutorialSpawnJavali && !javaliMissaoConcluida)
             {
-                loboMissaoConcluida = true;
-                tutorialSpawnLobo = false;
-                OcultarPainelMissao();
-                dialogoController.RequisitarAvaliacoesPeriodicamente();
-            });
+                AtualizarMissao(Especie.Javali, requisitoRaposa, () =>
+                {
+                    javaliMissaoConcluida = true;
+                    tutorialSpawnJavali = false;
+                    OcultarPainelMissao();
+                    StartCoroutine(AguardarETrocarMissao(20f, ShowTutorialSpawnLobo));
+                });
+            }
+
+            if (tutorialSpawnLobo && !loboMissaoConcluida)
+            {
+                AtualizarMissao(Especie.Lobo, requisitoLobo, () =>
+                {
+                    loboMissaoConcluida = true;
+                    tutorialSpawnLobo = false;
+                    OcultarPainelMissao();
+                    ShowMissaoAvalicaoEcologica();
+                    painelBloqueio.SetActive(false);
+                });
+            }
+        }
+        else
+        {
+            painelBloqueio.SetActive(false);
         }
 
         if (painelTutorial.activeSelf && Time.timeScale != 0f)
@@ -118,13 +132,12 @@ public class TutorialController : MonoBehaviour
         }
     }
 
-
     public IEnumerator ShowTutorialSpawnCoelho()
     {
         if (!tutorialSpawnCoelho && !coelhoMissaoConcluida)
         {
             tutorialSpawnCoelho = true;
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(2f);
 
             ExibirPainelTutorial(
                 "Para iniciarmos a popular o nosso ecossistema, selecione uma especie disponivel no painel. \r\n\r\n" +
@@ -143,23 +156,12 @@ public class TutorialController : MonoBehaviour
         }
     }
 
-    public void ShowTutorialPontoVida()
-    {
-        ExibirPainelTutorial(
-            "Voce esta sem pontos de vida suficientes para adicionar essa especie. \r\n\r\n" +
-            "A alimentacao e a reproducao dos animais geram pontos de vida, entao fique atento aos comportamentos naturais e acumule saldo para novas adicoes.",
-            "Images/Tutorial/PontoVida"
-        );
-
-        AudioManager.instance.PlayEfeito("Tutorial");
-    }
-
     public void ShowTutorialSpawnRaposa()
     {
         if (!tutorialSpawnRaposa && !raposaMissaoConcluida)
         {
             ExibirPainelTutorial(
-                "Os coelhos estao comecando a se reproduzir rapidamente, e em breve poderao superlotar o ecossistema! \r\n\r\n" +
+                "Os coelhos se reproduzem rapidamente, e em breve poderao superlotar o ecossistema! \r\n\r\n" +
                 "Observe na imagem! A raposa pode ser o predador ideal para controlar a populacao de coelhos.",
                 "Images/Tutorial/SpawnAnimalRaposa"
             );
@@ -171,6 +173,7 @@ public class TutorialController : MonoBehaviour
             );
 
             AudioManager.instance.PlayEfeito("Tutorial");
+            painelSpawnCoelho.SetActive(false);
             painelSpawnRaposa.SetActive(true);
             tutorialSpawnRaposa = true;
         }
@@ -188,11 +191,12 @@ public class TutorialController : MonoBehaviour
 
             ExibirPainelMissao(
                 "Adicione Javalis",
-                "0/2",
+                "0/4",
                 "Images/Animais/Javali"
             );
 
             AudioManager.instance.PlayEfeito("Tutorial");
+            painelSpawnRaposa.SetActive(false);
             painelSpawnJavali.SetActive(true);
             tutorialSpawnJavali = true;
         }
@@ -215,8 +219,38 @@ public class TutorialController : MonoBehaviour
             );
 
             AudioManager.instance.PlayEfeito("Tutorial");
+            painelSpawnJavali.SetActive(false);
             painelSpawnLobo.SetActive(true);
             tutorialSpawnLobo = true;
+        }
+    }
+
+    public void ShowMissaoAvalicaoEcologica()
+    {
+        ExibirPainelMissao(
+            "Avaliacao Ecologica",
+            dialogoController.GetTempoRestanteParaAvaliacao().ToString(),
+            "Images/Animais/Pesquisa"
+        );
+
+        GameManager.Instance.tutorial = true;
+        missaoAvaliacaoEcologica = true;
+        StartCoroutine(AtualizarTempoRestanteMissao());
+        StartCoroutine(dialogoController.RequisitarAvaliacoesPeriodicamente());
+    }
+
+    private IEnumerator AtualizarTempoRestanteMissao()
+    {
+        while (missaoAvaliacaoEcologica)
+        {
+            float tempoRestanteSegundos = dialogoController.GetTempoRestanteParaAvaliacao();
+            int minutos = Mathf.FloorToInt(tempoRestanteSegundos / 60f);
+            int segundos = Mathf.FloorToInt(tempoRestanteSegundos % 60);
+
+            // Formata o tempo no formato MM:SS
+            string tempoFormatado = string.Format("{0:00}:{1:00}", minutos, segundos);
+            descricaoMissao.text = $"Tempo Restante: {tempoFormatado}";
+            yield return new WaitForSeconds(1f);
         }
     }
 

@@ -33,16 +33,23 @@ public class Herbivoro : Animal
         }
         else
         {
-
-            if (gramaAlvo != null && tempoFome <= tempoApetite)
+            if (tempoFome <= tempoApetite) 
             {
-                Vector3 posicaoGrama = gramaAlvo.transform.position;
-                float distanciaParaGrama = Vector2.Distance(transform.position, posicaoGrama);
-                LocomoverPara(posicaoGrama);
-
-                if (distanciaParaGrama <= distanciaConsumoGrama)
+                if (gramaAlvo == null)
                 {
-                    Comer();
+                    gramaAlvo = BuscarGramaMaisProxima();
+                }
+
+                if (gramaAlvo != null)
+                {
+                    Vector3 posicaoGrama = gramaAlvo.transform.position;
+                    float distanciaParaGrama = Vector2.Distance(transform.position, posicaoGrama);
+                    LocomoverPara(posicaoGrama);
+
+                    if (distanciaParaGrama <= distanciaConsumoGrama)
+                    {
+                        Comer();
+                    }
                 }
             }
             else if (!esperandoRonda)
@@ -51,6 +58,7 @@ public class Herbivoro : Animal
             }
         }
     }
+
 
     private void VerificarMovimento()
     {
@@ -92,11 +100,32 @@ public class Herbivoro : Animal
                 LocomoverPara(colider.transform.position);
             }
         }
-        else if (colider.CompareTag("Grama") && gramaAlvo == null)
-        {
-            gramaAlvo = colider.gameObject;
-        }
     }
+
+    private GameObject BuscarGramaMaisProxima()
+    {
+        float raioBusca = 10f; 
+        Collider2D[] colisoes = Physics2D.OverlapCircleAll(transform.position, raioBusca);
+
+        GameObject gramaMaisProxima = null;
+        float menorDistancia = Mathf.Infinity;
+
+        foreach (Collider2D colisao in colisoes)
+        {
+            if (colisao.CompareTag("Grama"))
+            {
+                float distancia = Vector2.Distance(transform.position, colisao.transform.position);
+                if (distancia < menorDistancia)
+                {
+                    menorDistancia = distancia;
+                    gramaMaisProxima = colisao.gameObject;
+                }
+            }
+        }
+
+        return gramaMaisProxima;
+    }
+
 
     protected override void Comer()
     {

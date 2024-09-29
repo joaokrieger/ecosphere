@@ -27,70 +27,40 @@ public class SpawnAnimal : MonoBehaviour
         return randomPosition;
     }
 
-    public bool VerificaSaldoSpawn(GameObject prefab)
-    {
-        Animal animal = prefab.GetComponent<Animal>();
-        if (GameManager.Instance.RemoveSaldo(animal.GetPrecoSpawn()))
-        {
-            return true;
-        }
-
-        tutorialController.ShowTutorialPontoVida();
-        return false;
-    }
-
     public void SpawnUrso()
     {
-        if (VerificaSaldoSpawn(ursoPrefab))
-        {
-            Instantiate(ursoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
-            AudioManager.instance.PlayAnimal("Urso");
-        }
+        Instantiate(ursoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+        AudioManager.instance.PlayAnimal("Urso");
     }
 
     public void SpawnLobo()
     {
-        if (VerificaSaldoSpawn(loboPrefab))
-        {
-            Instantiate(loboPrefab, GetRandomSpawnPosition(), Quaternion.identity);
-            AudioManager.instance.PlayAnimal("Lobo");
-        }
+        Instantiate(loboPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+        AudioManager.instance.PlayAnimal("Lobo");
     }
 
     public void SpawnCoelho()
     {
-        if (VerificaSaldoSpawn(coelhoPrefab))
-        {
-            Instantiate(coelhoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
-            AudioManager.instance.PlayAnimal("Coelho");
-        }
+        Instantiate(coelhoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+        AudioManager.instance.PlayAnimal("Coelho");
     }
 
     public void SpawnRaposa()
     {
-        if (VerificaSaldoSpawn(raposaPrefab))
-        {
-            Instantiate(raposaPrefab, GetRandomSpawnPosition(), Quaternion.identity);
-            AudioManager.instance.PlayAnimal("Raposa");
-        }
+        Instantiate(raposaPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+        AudioManager.instance.PlayAnimal("Raposa");
     }
 
     public void SpawnJavali()
     {
-        if (VerificaSaldoSpawn(javaliPrefab))
-        {
-            Instantiate(javaliPrefab, GetRandomSpawnPosition(), Quaternion.identity);
-            AudioManager.instance.PlayAnimal("Javali");
-        }
+        Instantiate(javaliPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+        AudioManager.instance.PlayAnimal("Javali");
     }
 
     public void SpawnCervo()
     {
-        if (VerificaSaldoSpawn(cervoPrefab))
-        {
-            Instantiate(cervoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
-            AudioManager.instance.PlayAnimal("Cervo");
-        }
+        Instantiate(cervoPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+        AudioManager.instance.PlayAnimal("Cervo");
     }
 
     public static void SpawnGrama(GameObject gramaPrefab, Vector3 posicaoSpawn)

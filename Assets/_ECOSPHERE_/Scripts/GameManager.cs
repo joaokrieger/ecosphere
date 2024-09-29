@@ -11,9 +11,9 @@ public class GameManager : MonoBehaviour
     public GameObject[] prefabEspecies;
     public GameObject gramaPrefab;
     public Fase faseAtual;
+    public bool tutorial = false;
 
     private string enderecoArquivoJson;
-    private int saldo = 70;
 
     [System.Serializable]
     public class GameData
@@ -96,10 +96,10 @@ public class GameManager : MonoBehaviour
                 InstanciarGrama(gramaData);
             }
 
-            SetSaldo(gameData.ecossistemaData.pontosVida);
             if (this.faseAtual == null && Enum.TryParse(gameData.ecossistemaData.fase, out Fase fase))
             {
                 AtualizarFase(fase);
+                tutorial = bool.Parse(gameData.ecossistemaData.tutorial);
             }
 
             Debug.Log("Jogo carregado com sucesso.");
@@ -246,31 +246,6 @@ public class GameManager : MonoBehaviour
         return prefabEspecies[(int)especie];
     }
 
-    public void AdicionaSaldo(int valor)
-    {
-        saldo += valor;
-    }
-
-    public bool RemoveSaldo(int valor)
-    {
-        if ((saldo - valor) >= 0)
-        {
-            saldo -= valor;
-            return true;
-        }
-
-        return false;
-    }
-
-    public int GetSaldo()
-    {
-        return this.saldo;
-    }
-
-    private void SetSaldo(int saldo) {
-        this.saldo = saldo;
-    }
-
     public void AtualizarFase(Fase novaFase)
     {
         if (novaFase != null)
@@ -289,16 +264,6 @@ public class GameManager : MonoBehaviour
         if (faseAtual == Fase.Fase02)
         {
             return Fase.Fase03;
-        }
-
-        if (faseAtual == Fase.Fase03)
-        {
-            return Fase.Fase04;
-        }
-
-        if (faseAtual == Fase.Fase04)
-        {
-            return Fase.Fase05;
         }
 
         return faseAtual;

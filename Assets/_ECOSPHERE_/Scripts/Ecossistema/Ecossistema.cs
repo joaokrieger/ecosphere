@@ -8,6 +8,7 @@ public class Ecossistema : MonoBehaviour
     public float raioSpawnCogumelo = 3f;
     public float tempoDesaparecimento = 5f; 
     public GameObject cogumeloPrefab;
+    public Vegetacao vegetacao;
     private Tilemap tilemapCampo;
 
     void Start()
@@ -41,5 +42,28 @@ public class Ecossistema : MonoBehaviour
         float yOffset = Mathf.Sin(anguloAleatorio * Mathf.Deg2Rad) * raio;
 
         return new Vector3(posicaoCadaver.x + xOffset, posicaoCadaver.y + yOffset, posicaoCadaver.z);
+    }
+
+    public void ResetarSimulacao()
+    {
+        GameObject[] gramas = GameObject.FindGameObjectsWithTag("Grama");
+        foreach (GameObject grama in gramas)
+        {
+            Destroy(grama);
+        }
+
+        GameObject[] predadores = GameObject.FindGameObjectsWithTag("Predador");
+        foreach (GameObject predador in predadores)
+        {
+            Destroy(predador);
+        }
+
+        GameObject[] presas = GameObject.FindGameObjectsWithTag("Presa");
+        foreach (GameObject presa in presas)
+        {
+            Destroy(presa);
+        }
+
+        vegetacao.SpawnInicialGrama();
     }
 }

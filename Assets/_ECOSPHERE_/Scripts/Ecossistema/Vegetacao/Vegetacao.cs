@@ -5,15 +5,15 @@ using UnityEngine.Tilemaps;
 
 public class Vegetacao : MonoBehaviour
 {
-    public int numeroDeGrama;
+    public int numeroDeGrama = 100;
+    public int spawnInicial = 50;
     public GameObject gramaPrefab;
     public Vector2 areaSpawnMin;
     public Vector2 areaSpawnMax;
-    public float intervaloSpawn;
+    public float intervaloSpawn = 1f;
 
     private Tilemap tilemapCampo;
     private Tilemap tilemapEstrutura;
-    private int gramaSpawnada;
 
     void Start()
     {
@@ -21,20 +21,37 @@ public class Vegetacao : MonoBehaviour
         tilemapCampo = campoObject.GetComponent<Tilemap>();
         GameObject estruturaObject = GameObject.FindWithTag("Estruturas");
         tilemapEstrutura = estruturaObject.GetComponent<Tilemap>();
+        SpawnInicialGrama();
         StartCoroutine(RotinaSpawnGrama());
     }
 
-    void Update()
+    public void SpawnInicialGrama()
     {
-        gramaSpawnada = GameObject.FindGameObjectsWithTag("Grama").Length;
+        int gramas = GameObject.FindGameObjectsWithTag("Grama").Length;
+        if (gramas == 0)
+        {
+            for (int i = 0; i < spawnInicial; i++)
+            {
+                SpawnGrama();
+            }
+        }
     }
 
     IEnumerator RotinaSpawnGrama()
     {
-         
-        while (gramaSpawnada < numeroDeGrama)
+        int gramas = GameObject.FindGameObjectsWithTag("Grama").Length;
+        while (gramas < numeroDeGrama)
         {
-            // Gera uma posição aleatória dentro da área de spawn
+            SpawnGrama();
+            yield return new WaitForSeconds(intervaloSpawn); 
+        }
+    }
+
+    void SpawnGrama()
+    {
+        bool conseguiuSpawnar = false;
+        while (!conseguiuSpawnar)
+        {
             float randomX = Random.Range(areaSpawnMin.x, areaSpawnMax.x);
             float randomY = Random.Range(areaSpawnMin.y, areaSpawnMax.y);
             Vector3 posicaoAleatoria = new Vector3(randomX, randomY, 0);
@@ -43,9 +60,10 @@ public class Vegetacao : MonoBehaviour
             if (tilemapCampo.HasTile(posicaoCelula) && !tilemapEstrutura.HasTile(posicaoCelula))
             {
                 Vector3 posicaoSpawn = tilemapCampo.CellToWorld(posicaoCelula) + tilemapCampo.tileAnchor;
-                SpawnAnimal.SpawnGrama(gramaPrefab, posicaoSpawn);
-                yield return new WaitForSeconds(intervaloSpawn);
+                Instantiate(gramaPrefab, posicaoSpawn, Quaternion.identity);
+                conseguiuSpawnar = true;
             }
         }
     }
+
 }

@@ -10,7 +10,6 @@ public class QuizManager : MonoBehaviour
     public GameObject[] opcoes;
     public Image imagemQuestao;
     public int questaoAtual;
-    private int pontosGanhos;
     private int questoesErradas;
     private int quantidadeQuestoes;
     private SceneHandler sceneHandler;
@@ -22,7 +21,6 @@ public class QuizManager : MonoBehaviour
     public GameObject telaDeFinalizacao;
     public GameObject telaQuestionario;
     public Text textoQuantidadeAcerto;
-    public Text textoPontosRecebidos;
 
     private void Start() {
         CarregarPerguntas();
@@ -44,30 +42,17 @@ public class QuizManager : MonoBehaviour
         }
         else if (GameManager.Instance.faseAtual == Fase.Fase02)
         {
-            textoFase.text = "Fase 02 - Ecossistemas";
+            textoFase.text = "Fase 02 - Niveis Troficos";
             Sprite sprite = Resources.Load<Sprite>("Images/MapaFases/Fase02");
             imagemFase.sprite = sprite;
         }
         else if (GameManager.Instance.faseAtual == Fase.Fase03)
         {
-            textoFase.text = "Fase 03 - Populacoes e Comunidades";
+            textoFase.text = "Fase 03 - Cadeias Alimentares";
             Sprite sprite = Resources.Load<Sprite>("Images/MapaFases/Fase03");
             imagemFase.sprite = sprite;
         }
-        else if (GameManager.Instance.faseAtual == Fase.Fase04)
-        {
-            textoFase.text = "Fase 04 - Cadeias e Teias Alimentares";
-            Sprite sprite = Resources.Load<Sprite>("Images/MapaFases/Fase04");
-            imagemFase.sprite = sprite;
-        }
-        else if (GameManager.Instance.faseAtual == Fase.Fase05)
-        {
-            textoFase.text = "Parabens! Todas as fases foram concluidas com sucesso!";
-            Sprite sprite = Resources.Load<Sprite>("Images/MapaFases/Fase05");
-            imagemFase.sprite = sprite;
-        }
 
-        pontosGanhos = 0;
         questoesErradas = 0;
     }
 
@@ -90,14 +75,11 @@ public class QuizManager : MonoBehaviour
         {
             ExibirTelaDesempenhoAvalicao();
         }
-
-        pontosGanhos += 9;
     }
 
     public void RespostaErrada()
     {
         AudioManager.instance.PlayEfeito("RespostaErrada");
-        pontosGanhos -= 3;
         questoesErradas++;
     }
 
@@ -227,7 +209,6 @@ public class QuizManager : MonoBehaviour
                 "Images/Fase 01/Questao07"
             ));
         }
-
 
         // Perguntas Fase 02 - Niveis Troficos
         if (GameManager.Instance.faseAtual == Fase.Fase02)
@@ -404,12 +385,6 @@ public class QuizManager : MonoBehaviour
                 "Images/Fase 03/Questao07"
             ));
         }
-
-        // Perguntas Fase 04 - Teias Alimentares
-        if (GameManager.Instance.faseAtual == Fase.Fase04)
-        {
-
-        }
     }
 
     private void ExibirTelaDesempenhoAvalicao()
@@ -417,13 +392,11 @@ public class QuizManager : MonoBehaviour
         telaQuestionario.SetActive(false);
         telaDeFinalizacao.SetActive(true);
         textoQuantidadeAcerto.text = ((quantidadeQuestoes * 4) - questoesErradas)+"/"+(quantidadeQuestoes * 4);
-        textoPontosRecebidos.text = "+"+pontosGanhos;
     }
 
     public void FinalizaAvalicaoEcologica()
     {
         sceneHandler.NavegarParaEcossistema();
         GameManager.Instance.AtualizarFase(GameManager.Instance.GetNextFase());
-        GameManager.Instance.AdicionaSaldo(this.pontosGanhos);
     }
 }

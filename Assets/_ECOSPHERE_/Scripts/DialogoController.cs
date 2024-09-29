@@ -10,8 +10,9 @@ public class DialogoController : MonoBehaviour
     public Text textoDialogo;
     public GameObject painelPermitePular;
     public TutorialController tutorialController;
-    private float intervaloAvaliacao = 220f; // 2 minutos 
+    private float intervaloAvaliacao = 220f;
     private bool permitePular;
+    private float ultimoTempoAvaliacao;
 
     void Start()
     {
@@ -54,6 +55,7 @@ public class DialogoController : MonoBehaviour
         ExibirMensagem(mensagem);
         yield return new WaitForSeconds(10f);
         sceneHandler.NavegarParaAvaliacaoEcologica();
+        ultimoTempoAvaliacao = Time.time;
     }
 
     private void ExibirMensagem(string mensagem)
@@ -78,11 +80,18 @@ public class DialogoController : MonoBehaviour
 
     public IEnumerator RequisitarAvaliacoesPeriodicamente()
     {
+        ultimoTempoAvaliacao = Time.time;
         while (true)
         {
             yield return new WaitForSeconds(intervaloAvaliacao);
             string mensagem = "Tempo para avaliação ecológica! Vamos ver como está o seu progresso.";
             StartCoroutine(RequisitarAvalicao(mensagem));
         }
+    }
+
+    public float GetTempoRestanteParaAvaliacao()
+    {
+        float tempoDecorrido = Time.time - ultimoTempoAvaliacao;
+        return Mathf.Max(0f, intervaloAvaliacao - tempoDecorrido);
     }
 }

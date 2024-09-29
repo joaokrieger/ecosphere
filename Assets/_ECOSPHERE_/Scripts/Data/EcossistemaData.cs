@@ -4,11 +4,12 @@ using UnityEngine;
 public class EcossistemaData
 {
     public string fase;
+    public string tutorial;
     public int pontosVida;
 
     public EcossistemaData()
     {
         fase = GameManager.Instance.faseAtual.ToString();
-        pontosVida = GameManager.Instance.GetSaldo();
+        tutorial = GameManager.Instance.tutorial.ToString();
     }
 }
