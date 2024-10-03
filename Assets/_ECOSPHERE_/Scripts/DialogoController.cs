@@ -10,7 +10,7 @@ public class DialogoController : MonoBehaviour
     public Text textoDialogo;
     public GameObject painelPermitePular;
     public TutorialController tutorialController;
-    private float intervaloAvaliacao = 220f;
+    private float intervaloAvaliacao = 120f;
     private bool permitePular;
     private float ultimoTempoAvaliacao;
 
@@ -84,7 +84,8 @@ public class DialogoController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(intervaloAvaliacao);
-            string mensagem = "Tempo para avaliação ecológica! Vamos ver como está o seu progresso.";
+            string mensagem = "Chegou o momento de uma avaliacao ecologica!\n\n" +
+                "Agora vamos testar o seu conhecimento e ver como esta o seu progresso revitalizando o ecossistema.";
             StartCoroutine(RequisitarAvalicao(mensagem));
         }
     }

@@ -18,6 +18,9 @@ public class TutorialController : MonoBehaviour
     public Text descricaoMissao;
     public Image imagemMissao;
 
+    [Header("Painel Resetar")]
+    public GameObject painelResetar;
+
     [Header("Painel Spawn Animais")]
     public GameObject painelSpawnCoelho;
     public GameObject painelSpawnRaposa;
@@ -41,10 +44,28 @@ public class TutorialController : MonoBehaviour
 
     public bool missaoAvaliacaoEcologica = false;
 
-    private const int requisitoCoelho = 10;
+    private const int requisitoCoelho = 7;
     private const int requisitoRaposa = 2;
-    private const int requisitoJavali = 4;
+    private const int requisitoJavali = 2;
     private const int requisitoLobo = 2;
+
+    void Start()
+    {
+        if (GameManager.Instance.tutorial)
+        {
+            ShowMissaoAvalicaoEcologica();
+            painelResetar.SetActive(false);
+            painelBloqueio.SetActive(false);
+
+            //Habilitando painel de animais
+            painelSpawnCoelho.SetActive(true);
+            painelSpawnRaposa.SetActive(true);
+            painelSpawnJavali.SetActive(true);
+            painelSpawnLobo.SetActive(true);
+            painelSpawnCervo.SetActive(true);
+            painelSpawnUrso.SetActive(true);
+        }
+    }
 
     void Update()
     {
@@ -58,6 +79,7 @@ public class TutorialController : MonoBehaviour
                     coelhoMissaoConcluida = true;
                     tutorialSpawnCoelho = false;
                     OcultarPainelMissao();
+                    painelSpawnCoelho.SetActive(false);
                     StartCoroutine(AguardarETrocarMissao(30f, ShowTutorialSpawnRaposa));
                 });
             }
@@ -69,17 +91,19 @@ public class TutorialController : MonoBehaviour
                     raposaMissaoConcluida = true;
                     tutorialSpawnRaposa = false;
                     OcultarPainelMissao();
+                    painelSpawnRaposa.SetActive(false);
                     StartCoroutine(AguardarETrocarMissao(20f, ShowTutorialSpawnJavali));
                 });
             }
 
             if (tutorialSpawnJavali && !javaliMissaoConcluida)
             {
-                AtualizarMissao(Especie.Javali, requisitoRaposa, () =>
+                AtualizarMissao(Especie.Javali, requisitoJavali, () =>
                 {
                     javaliMissaoConcluida = true;
                     tutorialSpawnJavali = false;
                     OcultarPainelMissao();
+                    painelSpawnJavali.SetActive(false);
                     StartCoroutine(AguardarETrocarMissao(20f, ShowTutorialSpawnLobo));
                 });
             }
@@ -91,8 +115,8 @@ public class TutorialController : MonoBehaviour
                     loboMissaoConcluida = true;
                     tutorialSpawnLobo = false;
                     OcultarPainelMissao();
-                    ShowMissaoAvalicaoEcologica();
-                    painelBloqueio.SetActive(false);
+                    painelSpawnLobo.SetActive(false);
+                    StartCoroutine(AguardarETrocarMissao(20f, InicializarQuestionarios));
                 });
             }
         }
@@ -101,14 +125,28 @@ public class TutorialController : MonoBehaviour
             painelBloqueio.SetActive(false);
         }
 
-        if (painelTutorial.activeSelf && Time.timeScale != 0f)
+        if ((painelTutorial.activeSelf || painelResetar.activeSelf) && Time.timeScale != 0f)
         {
             Time.timeScale = 0f;
         }
-        else if (!painelTutorial.activeSelf && Time.timeScale == 0f)
+        else if ((!painelTutorial.activeSelf && !painelResetar.activeSelf) && Time.timeScale == 0f)
         {
             Time.timeScale = 1f;
         }
+    }
+
+    private void InicializarQuestionarios()
+    {
+        ShowMissaoAvalicaoEcologica();
+        AudioManager.instance.PlayEfeito("Tutorial");
+        painelResetar.SetActive(true);
+        painelBloqueio.SetActive(false);
+
+        //Habilitando painel de animais
+        painelSpawnCoelho.SetActive(true);
+        painelSpawnRaposa.SetActive(true);
+        painelSpawnJavali.SetActive(true);
+        painelSpawnLobo.SetActive(true);
     }
 
     private void AtualizarMissao(Especie especieRequerida, int quantidadeRequerida, System.Action onSuccess)
@@ -147,7 +185,7 @@ public class TutorialController : MonoBehaviour
 
             ExibirPainelMissao(
                 "Adicione Coelhos",
-                "0/10",
+                "0/7",
                 "Images/Animais/Coelho"
             );
 
@@ -173,7 +211,6 @@ public class TutorialController : MonoBehaviour
             );
 
             AudioManager.instance.PlayEfeito("Tutorial");
-            painelSpawnCoelho.SetActive(false);
             painelSpawnRaposa.SetActive(true);
             tutorialSpawnRaposa = true;
         }
@@ -191,12 +228,11 @@ public class TutorialController : MonoBehaviour
 
             ExibirPainelMissao(
                 "Adicione Javalis",
-                "0/4",
+                "0/2",
                 "Images/Animais/Javali"
             );
 
             AudioManager.instance.PlayEfeito("Tutorial");
-            painelSpawnRaposa.SetActive(false);
             painelSpawnJavali.SetActive(true);
             tutorialSpawnJavali = true;
         }
@@ -219,7 +255,6 @@ public class TutorialController : MonoBehaviour
             );
 
             AudioManager.instance.PlayEfeito("Tutorial");
-            painelSpawnJavali.SetActive(false);
             painelSpawnLobo.SetActive(true);
             tutorialSpawnLobo = true;
         }

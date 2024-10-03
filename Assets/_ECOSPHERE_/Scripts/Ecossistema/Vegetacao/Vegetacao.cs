@@ -21,19 +21,19 @@ public class Vegetacao : MonoBehaviour
         tilemapCampo = campoObject.GetComponent<Tilemap>();
         GameObject estruturaObject = GameObject.FindWithTag("Estruturas");
         tilemapEstrutura = estruturaObject.GetComponent<Tilemap>();
-        SpawnInicialGrama();
         StartCoroutine(RotinaSpawnGrama());
+        
+        if (GameManager.Instance.faseAtual == Fase.Fase01)
+        {
+            SpawnInicialGrama();
+        }
     }
 
     public void SpawnInicialGrama()
     {
-        int gramas = GameObject.FindGameObjectsWithTag("Grama").Length;
-        if (gramas == 0)
+        for (int i = 0; i < spawnInicial; i++)
         {
-            for (int i = 0; i < spawnInicial; i++)
-            {
-                SpawnGrama();
-            }
+            SpawnGrama();
         }
     }
 
