@@ -9,6 +9,7 @@ public class MonitorRecursos : MonoBehaviour
     public GameObject indicadorCarnivoros;
     public GameObject indicadorHerbivoros;
     public GameObject indicadorProdutores;
+    public GameObject pontuacaoJogador;
 
     // Update is called once per frame
     void Update()
@@ -22,5 +23,6 @@ public class MonitorRecursos : MonoBehaviour
         indicadorHerbivoros.GetComponent<Text>().text = quantidadeHerbivoro.ToString();
         indicadorProdutores.GetComponent<Text>().text = quantidadeProdutor.ToString();
         indicadorPopulacao.GetComponent<Text>().text = (quantidadeCarnivoro + quantidadeHerbivoro).ToString();
+        pontuacaoJogador.GetComponent<Text>().text = "Pontos: " + GameManager.Instance.pontuacaoJogador;
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TutorialController : MonoBehaviour
 {
+
     [Header("Painel do Dialogo")]
     public DialogoController dialogoController;
 
@@ -80,7 +81,6 @@ public class TutorialController : MonoBehaviour
                     tutorialSpawnCoelho = false;
                     OcultarPainelMissao();
                     painelSpawnCoelho.SetActive(false);
-                    StartCoroutine(AguardarETrocarMissao(30f, ShowTutorialSpawnRaposa));
                 });
             }
 
@@ -310,7 +310,7 @@ public class TutorialController : MonoBehaviour
         painelTutorial.SetActive(false);;
     }
 
-    private IEnumerator AguardarETrocarMissao(float delay, System.Action onDelayComplete)
+    public IEnumerator AguardarETrocarMissao(float delay, System.Action onDelayComplete)
     {
         yield return new WaitForSeconds(delay);
         onDelayComplete?.Invoke();

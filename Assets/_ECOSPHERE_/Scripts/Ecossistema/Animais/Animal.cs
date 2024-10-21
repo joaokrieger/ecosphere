@@ -8,6 +8,7 @@ public abstract class Animal : MonoBehaviour
 {
     [Header("Configurações do Ecossistema")]
     private Ecossistema ecossistema;
+    private TutorialController tutorialController;
 
     [Header("Configurações de Animal")]
     public Especie especie;
@@ -41,6 +42,7 @@ public abstract class Animal : MonoBehaviour
         navMeshAgent.updateUpAxis = false;
 
         ecossistema = FindObjectOfType<Ecossistema>();
+        tutorialController = FindObjectOfType<TutorialController>();
         tempoReproducao = intervaloReproducao * 2;
 
         emoteMorte = transform.Find("EmoteMorte").gameObject;
@@ -165,6 +167,11 @@ public abstract class Animal : MonoBehaviour
                 filhoteAnimal.tempoVida = Random.Range(120f, 240f);
                 filhoteAnimal.tempoFome = this.saciedade;
                 filhoteAnimal.tempoReproducao = this.tempoReproducao;
+
+                if (!tutorialController.raposaMissaoConcluida)
+                {
+                    StartCoroutine(tutorialController.AguardarETrocarMissao(5f, tutorialController.ShowTutorialSpawnRaposa));
+                }
             }
             else
             {

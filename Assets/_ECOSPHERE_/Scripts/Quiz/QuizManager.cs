@@ -391,7 +391,10 @@ public class QuizManager : MonoBehaviour
     {
         telaQuestionario.SetActive(false);
         telaDeFinalizacao.SetActive(true);
-        textoQuantidadeAcerto.text = ((quantidadeQuestoes * 4) - questoesErradas)+"/"+(quantidadeQuestoes * 4);
+
+        int pontuacaoAvaliacao = ((quantidadeQuestoes * 4) - questoesErradas);
+        textoQuantidadeAcerto.text = pontuacaoAvaliacao + "/"+(quantidadeQuestoes * 4);
+        GameManager.Instance.pontuacaoJogador += pontuacaoAvaliacao;
     }
 
     public void FinalizaAvalicaoEcologica()

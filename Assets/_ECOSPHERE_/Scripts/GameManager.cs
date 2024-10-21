@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public GameObject[] prefabEspecies;
     public GameObject gramaPrefab;
+    public int pontuacaoJogador = 0;
     public Fase faseAtual;
     public bool tutorial = false;
 
@@ -100,6 +101,7 @@ public class GameManager : MonoBehaviour
             {
                 AtualizarFase(fase);
                 tutorial = bool.Parse(gameData.ecossistemaData.tutorial);
+                pontuacaoJogador = gameData.ecossistemaData.pontuacaoJogador;
             }
 
             Debug.Log("Jogo carregado com sucesso.");
