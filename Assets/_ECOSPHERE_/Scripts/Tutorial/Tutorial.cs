@@ -166,12 +166,32 @@ public class Tutorial : MonoBehaviour
                     ExibirPainelTutorial(
                         "Voce esta indo bem! \n\n" +
                         "Apresento as raposas! As raposas sao consumidoras secundarias, pois se alimentam de consumidores primarios como o coelho. \n\n" +
-                        "A raposa vai predar os coelhos! Isso mostra como a cadeia alimentar funciona na natureza.",
+                        "As raposas vao predar os coelhos! Isso mostra como a cadeia alimentar funciona na natureza.",
                         "Images/Tutorial/ApresentacaoRaposa"
                     );
                 }));
 
-                StartCoroutine(AguardarExecutar(40f, MostrarTutorial));
+                StartCoroutine(AguardarExecutar(30f, () =>
+                {
+                    ExibirPainelTutorial(
+                        "Fique atento! Os animais tem tres emotes importantes que indicam seu estado. \n\n" +
+                        "Um emote de fome aparece quando estao procurando comida, o de reproducao quando estao prontos para aumentar a populacao, e o de morte quando estao em seus ultimos momentos. \n\n" +
+                        "Observe-os para manter o equilibrio no ecossistema!",
+                        "Images/Tutorial/ApresentacaoEmote"
+                    );
+                }));
+
+
+                StartCoroutine(AguardarExecutar(60f, () =>
+                {
+                    ExibirPainelTutorial(
+                        "Os cogumelos que surgem ao lado dos animais mortos sao decompositores. \n\n" +
+                        "Eles desempenham um papel vital no ecossistema, quebrando a materia organica e devolvendo nutrientes ao solo, garantindo que o ciclo da vida continue!",
+                        "Images/Tutorial/ApresentacaoDecompositores"
+                    );
+                }));
+
+                StartCoroutine(AguardarExecutar(90f, MostrarTutorial));
             }
         }
     }
@@ -248,14 +268,36 @@ public class Tutorial : MonoBehaviour
                 MostrarTutorial();
                 break;
             case 4:
-                IniciarMissaoAvaliacaoEcologica();
                 ConcluirEtapaTutorial();
+
+                StartCoroutine(AguardarExecutar(10f, () =>
+                {
+                        ExibirPainelTutorial(
+                        "Prepare-se! \n\n" +
+                        "Em breve, questionarios serao aplicados para testar seus conhecimentos sobre o ecossistema. \n\n" +
+                        "Fique atento e mostre o que aprendeu!",
+                        "Images/Tutorial/AvaliacaoTutorial"
+                    );
+                }));
+
+                IniciarMissaoAvaliacaoEcologica();
+
                 break;
             case 5:
 
                 if (GameManager.Instance.faseAtual == Fase.Fase02)
                 {
+                    StartCoroutine(AguardarExecutar(5f, () =>
+                    {
+                        ExibirPainelTutorial(
+                            "Fase Concluída! \n\n" +
+                            "Você liberou duas novas especies! O javali, um consumidor primario que se alimenta de plantas, e o lobo, um consumidor secundario que caça outros animais. \n\n" +
+                            "Veja como eles influenciam o equilibrio do ecossistema!",
+                            "Images/Tutorial/LoboJavali"
+                        );
+                    }));
 
+                    ConcluirEtapaTutorial();
                 }
 
                 break;
@@ -263,7 +305,35 @@ public class Tutorial : MonoBehaviour
 
                 if (GameManager.Instance.faseAtual == Fase.Fase03)
                 {
+                    StartCoroutine(AguardarExecutar(5f, () =>
+                    {
+                        ExibirPainelTutorial(
+                            "Fase Concluída! \n\n" +
+                            "Otima notícia! Voce liberou duas novas especies: o cervo, um consumidor primario que se alimenta de plantas, e o urso, um poderoso consumidor terciario que ocupa o topo da cadeia alimentar. \n\n" +
+                            "Observe como essas novas especies interagem no ecossistema!",
+                            "Images/Tutorial/UrsoCervo"
+                        );
+                    }));
 
+                    ConcluirEtapaTutorial();
+                }
+
+                break;
+
+            case 7:
+
+                if (GameManager.Instance.faseAtual == Fase.Fase04)
+                {
+                    StartCoroutine(AguardarExecutar(5f, () =>
+                    {
+                        ExibirPainelTutorial(
+                            "Parabens! Voce concluiu o jogo e restaurou o equilibrio do ecossistema! \n\n" +
+                            "Mas a jornada nao termina aqui! Continue explorando e simulando o ecossistema para ver como suas decisoes afetam o ambiente ao longo do tempo!",
+                            "Images/Tutorial/ConclusaoJogo"
+                        );
+
+                        AudioManager.instance.PlayEfeito("SucessoCampanha");
+                    }));
                 }
 
                 break;
