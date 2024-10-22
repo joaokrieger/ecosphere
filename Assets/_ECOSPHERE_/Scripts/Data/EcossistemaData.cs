@@ -4,13 +4,13 @@ using UnityEngine;
 public class EcossistemaData
 {
     public string fase;
-    public string tutorial;
+    public int passoAtual;
     public int pontuacaoJogador;
 
     public EcossistemaData()
     {
         pontuacaoJogador = GameManager.Instance.pontuacaoJogador;
         fase = GameManager.Instance.faseAtual.ToString();
-        tutorial = GameManager.Instance.tutorial.ToString();
+        passoAtual = GameManager.Instance.passoAtual;
     }
 }

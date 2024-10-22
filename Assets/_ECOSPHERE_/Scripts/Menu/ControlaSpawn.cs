@@ -30,7 +30,6 @@ public class ControlaSpawn : MonoBehaviour
     void Update()
     {
         Supervisionar();
-
     }
 
     private void Supervisionar()

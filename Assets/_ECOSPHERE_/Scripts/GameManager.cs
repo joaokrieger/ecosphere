@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public GameObject gramaPrefab;
     public int pontuacaoJogador = 0;
     public Fase faseAtual;
-    public bool tutorial = false;
+    public int passoAtual = 0;
 
     private string enderecoArquivoJson;
 
@@ -100,10 +100,10 @@ public class GameManager : MonoBehaviour
             if (this.faseAtual == null && Enum.TryParse(gameData.ecossistemaData.fase, out Fase fase))
             {
                 AtualizarFase(fase);
-                tutorial = bool.Parse(gameData.ecossistemaData.tutorial);
                 pontuacaoJogador = gameData.ecossistemaData.pontuacaoJogador;
             }
 
+            passoAtual = gameData.ecossistemaData.passoAtual;
             Debug.Log("Jogo carregado com sucesso.");
         }
         else
@@ -266,6 +266,11 @@ public class GameManager : MonoBehaviour
         if (faseAtual == Fase.Fase02)
         {
             return Fase.Fase03;
+        }
+
+        if (faseAtual == Fase.Fase03)
+        {
+            return Fase.Fase04;
         }
 
         return faseAtual;

@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class SpawnAnimal : MonoBehaviour
 {
-    [Header("Tutorial")]
-    public TutorialController tutorialController;
-
     [Header("Painel de Prefabs de Animais")]
     public GameObject coelhoPrefab;
     public GameObject raposaPrefab;
@@ -22,7 +19,6 @@ public class SpawnAnimal : MonoBehaviour
     private Vector3 GetRandomSpawnPosition()
     {
         Vector2 randomPoint = Random.insideUnitCircle * spawnRadius;
-
         Vector3 randomPosition = spawnPosition + new Vector3(randomPoint.x, randomPoint.y, 0);
         return randomPosition;
     }
