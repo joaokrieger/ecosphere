@@ -33,7 +33,7 @@ public class Tutorial : MonoBehaviour
     private SceneHandler sceneHandler;
     private bool tutorialReproducao = false;
     private bool permitePular = false;
-    private float intervaloAvaliacao = 240f;
+    private float intervaloAvaliacao = 180f;
     private float ultimoTempoAvaliacao;
 
     [System.Serializable]
@@ -140,7 +140,7 @@ public class Tutorial : MonoBehaviour
                 {
                     ExibirPainelTutorial(
                         "Otimo trabalho! \n\n" +
-                        "Conheca os coelhos! Ele sao consumidores primarios, o que significa que se alimentam diretamente das plantas do seu ecossistema. \n\n" +
+                        "Conheca os coelhos! Eles sao consumidores primarios, o que significa que se alimentam diretamente das plantas do seu ecossistema. \n\n" +
                         "Preste atencao e veja como os consumidores primarios aproveitam a grama!",
                         "Images/Tutorial/ApresentacaoCoelho"
                     );
@@ -290,8 +290,8 @@ public class Tutorial : MonoBehaviour
                     StartCoroutine(AguardarExecutar(5f, () =>
                     {
                         ExibirPainelTutorial(
-                            "Fase Concluída! \n\n" +
-                            "Você liberou duas novas especies! O javali, um consumidor primario que se alimenta de plantas, e o lobo, um consumidor secundario que caça outros animais. \n\n" +
+                            "Fase Concluida! \n\n" +
+                            "Voce liberou duas novas especies! O javali, um consumidor primario que se alimenta de plantas, e o lobo, um consumidor secundario que consome outros animais. \n\n" +
                             "Veja como eles influenciam o equilibrio do ecossistema!",
                             "Images/Tutorial/LoboJavali"
                         );
@@ -308,8 +308,8 @@ public class Tutorial : MonoBehaviour
                     StartCoroutine(AguardarExecutar(5f, () =>
                     {
                         ExibirPainelTutorial(
-                            "Fase Concluída! \n\n" +
-                            "Otima notícia! Voce liberou duas novas especies: o cervo, um consumidor primario que se alimenta de plantas, e o urso, um poderoso consumidor terciario que ocupa o topo da cadeia alimentar. \n\n" +
+                            "Fase Concluida! \n\n" +
+                            "Otima noticia! Voce liberou duas novas especies: o cervo, um consumidor primario que se alimenta de plantas, e o urso, um poderoso consumidor terciario que ocupa o topo da cadeia alimentar. \n\n" +
                             "Observe como essas novas especies interagem no ecossistema!",
                             "Images/Tutorial/UrsoCervo"
                         );

@@ -9,7 +9,6 @@ public class QuizManager : MonoBehaviour
     private List<Pergunta> perguntas = new List<Pergunta>();
     public GameObject[] opcoes;
     public Image imagemQuestao;
-    public int questaoAtual;
     private int questoesErradas;
     private int quantidadeQuestoes;
     private SceneHandler sceneHandler;
@@ -67,7 +66,7 @@ public class QuizManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         if (perguntas.Count > 1)
         {
-            perguntas.RemoveAt(questaoAtual);
+            perguntas.RemoveAt(0);
             ResetarRespostas();
             GerarQuestao();
         }
@@ -88,9 +87,9 @@ public class QuizManager : MonoBehaviour
         for (int i = 0; i < opcoes.Length; i++) {
             opcoes[i].GetComponent<Resposta>().estaCorreta = false;
             opcoes[i].GetComponent<Button>().interactable = true;
-            opcoes[i].transform.GetChild(0).GetComponent<Text>().text = perguntas[questaoAtual].respostas[i];
+            opcoes[i].transform.GetChild(0).GetComponent<Text>().text = perguntas[0].respostas[i];
 
-            if (perguntas[questaoAtual].repostaCorreta == i+1)
+            if (perguntas[0].repostaCorreta == i+1)
             {
                 opcoes[i].GetComponent<Resposta>().estaCorreta = true;
             }
@@ -99,15 +98,14 @@ public class QuizManager : MonoBehaviour
 
     public void GerarQuestao()
     {
-        questaoAtual = Random.Range(0, perguntas.Count);
-        textoQuestao.text = perguntas[questaoAtual].questao;
+        textoQuestao.text = perguntas[0].questao;
         GerarImagem();
         GerarRespostas();
     }
 
     public void GerarImagem()
     {
-        string imagem = perguntas[questaoAtual].caminhoImagem;
+        string imagem = perguntas[0].caminhoImagem;
         Sprite sprite = Resources.Load<Sprite>(imagem);
         imagemQuestao.sprite = sprite;
     }
@@ -126,86 +124,86 @@ public class QuizManager : MonoBehaviour
         if (GameManager.Instance.faseAtual == Fase.Fase01)
         {
             perguntas.Add(new Pergunta(
-                "Na imagem, todos os lobos estao vivendo na mesma area. O que isso representa no ecossistema?",
+                "O que sao os produtores em um ecossistema?",
                 new string[] {
-                    "Uma comunidade",
-                    "Uma populacao",
-                    "Um ecossistema",
-                    "Um habitat"
+                    "Organismos que se alimentam de plantas",
+                    "Organismos que produzem seu proprio alimento usando a luz solar",
+                    "Organismos que decompoem materia organica",
+                    "Animais que cacam outros animais"
                 },
                 2,
                 "Images/Fase 01/Questao01"
             ));
 
             perguntas.Add(new Pergunta(
-                "Na imagem, o lobo, o coelho e o cervo estao vivendo na mesma area e interagindo entre si. O que isso representa?",
+                "O que sao os consumidores primarios?",
                 new string[] {
-                    "Um ecossistema",
-                    "Uma populacao",
-                    "Uma comunidade",
-                    "Um habitat"
+                    "Organismos que produzem energia para consumidores secundarios",
+                    "Organismos que se alimentam de consumidores terciarios",
+                    "Organismos que se alimentam de produtores, como plantas",
+                    "Organismos que decompoem materia organica"
                 },
                 3,
                 "Images/Fase 01/Questao02"
             ));
 
             perguntas.Add(new Pergunta(
-                "Na imagem acima, o que representa o ecossistema?",
+                "O que sao os consumidores secundarios?",
                 new string[] {
-                    "Apenas os animais que vivem na area",
-                    "As interacoes entre os seres vivos e os fatores nao vivos, como o rio e o solo",
-                    "O grupo de animais que compete por recursos",
-                    "O conjunto de fatores nao vivos, como o solo e a agua"
+                    "Organismos que se alimentam de produtores",
+                    "Organismos que se alimentam de consumidores primarios",
+                    "Organismos que decompoem materia organica",
+                    "Organismos que produzem seu proprio alimento"
                 },
                 2,
                 "Images/Fase 01/Questao03"
             ));
 
             perguntas.Add(new Pergunta(
-                "Observe a imagem. Qual a diferenca entre a populacao e a comunidade representadas na cena?",
+                "O que sao os consumidores terciarios?",
                 new string[] {
-                    "A populacao inclui apenas os lobos, enquanto a comunidade inclui os lobos, coelhos e cervos",
-                    "A populacao inclui todas as especies, e a comunidade inclui apenas os coelhos",
-                    "A populacao inclui todos os seres vivos, enquanto a comunidade sao os fatores nao vivos",
-                    "Populacao e comunidade sao sinonimos"
+                    "Organismos que produzem energia para a cadeia alimentar",
+                    "Organismos que se alimentam de consumidores secundarios e outros carnivoros",
+                    "Organismos que se alimentam diretamente de produtores",
+                    "Organismos que decompoem materia organica"
                 },
-                1,
+                2,
                 "Images/Fase 01/Questao04"
             ));
 
             perguntas.Add(new Pergunta(
-                "Na imagem, como os fatores abioticos (nao vivos), como o sol e a agua, afetam os seres vivos?",
+                "O que sao os decompositores?",
                 new string[] {
-                    "Eles sao consumidos diretamente pelos herbivoros",
-                    "Eles fornecem as condicoes necessarias para o crescimento das plantas, que sao a base da cadeia alimentar",
-                    "Eles sao importantes apenas para os carnivoros",
-                    "Eles protegem os animais contra predadores"
+                    "Organismos que produzem energia para a cadeia alimentar",
+                    "Organismos que se alimentam de consumidores terciarios",
+                    "Organismos que decompoem materia organica e reciclam nutrientes no solo",
+                    "Organismos que se alimentam de consumidores primarios"
                 },
-                2,
+                3,
                 "Images/Fase 01/Questao05"
             ));
 
             perguntas.Add(new Pergunta(
-                "Na imagem, o coelho esta pastando e a raposa esta a espreita. Que tipo de interacao esta ocorrendo entre eles?",
+                "Qual o papel dos produtores em uma cadeia alimentar?",
                 new string[] {
-                    "Comensalismo",
-                    "Mutualismo",
-                    "Predatismo",
-                    "Parasitismo"
+                    "Controlar a populacao de consumidores primarios",
+                    "Fornecer energia para todos os outros niveis troficos",
+                    "Reciclar nutrientes no solo",
+                    "Se alimentar de consumidores secundarios"
                 },
-                3,
+                2,
                 "Images/Fase 01/Questao06"
             ));
 
             perguntas.Add(new Pergunta(
-                "Na imagem, o cervo esta pastando em uma area de campo aberto. O que seria o habitat desse cervo?",
+                "Qual o papel dos consumidores secundarios em um ecossistema?",
                 new string[] {
-                    "O lugar onde o cervo encontra comida e se abriga",
-                    "O conjunto de todas as especies que vivem com ele",
-                    "O ecossistema como um todo",
-                    "O conjunto de animais que interagem com o cervo"
+                    "Se alimentam de produtores para obter energia",
+                    "Mantem o equilibrio populacional ao se alimentarem de consumidores primarios",
+                    "Produzem alimento para consumidores terciarios",
+                    "Decompoem organismos mortos para liberar nutrientes"
                 },
-                1,
+                2,
                 "Images/Fase 01/Questao07"
             ));
         }
@@ -214,31 +212,31 @@ public class QuizManager : MonoBehaviour
         if (GameManager.Instance.faseAtual == Fase.Fase02)
         {
             perguntas.Add(new Pergunta(
-                "Na imagem, o coelho esta se alimentando de uma planta. Qual o nivel trofico ocupado pelo coelho?",
+                "Na imagem, a grama cresce no solo. Qual o nivel trofico ocupado pela grama?",
                 new string[] {
                     "Produtor",
                     "Consumidor primario",
                     "Consumidor secundario",
-                    "Consumidor terciario"
+                    "Decompositor"
                 },
-                2,
+                1,
                 "Images/Fase 02/Questao01"
             ));
 
             perguntas.Add(new Pergunta(
-                "Na imagem, as plantas utilizam a luz do sol para realizar fotossintese. Qual o nivel trofico delas?",
+                "Na imagem, o coelho se alimenta de uma grama. Qual o nivel trofico ocupado pelo coelho?",
                 new string[] {
                     "Consumidor primario",
                     "Consumidor secundario",
                     "Produtor",
                     "Decompositor"
                 },
-                3,
+                1,
                 "Images/Fase 02/Questao02"
             ));
 
             perguntas.Add(new Pergunta(
-                "O urso na imagem predou um cervo. Qual nivel trofico o urso ocupa?",
+                "Na imagem, a raposa observa os coelhos. Qual o nivel trofico ocupado pela raposa?",
                 new string[] {
                     "Consumidor primario",
                     "Consumidor secundario",
@@ -250,57 +248,41 @@ public class QuizManager : MonoBehaviour
             ));
 
             perguntas.Add(new Pergunta(
-                "A sequencia de imagens representa uma cadeia alimentar. Qual a ordem correta dos niveis troficos?",
-                new string[] {
-                    "Produtor -> Consumidor primario -> Consumidor secundario",
-                    "Consumidor primario -> Produtor -> Consumidor secundario",
-                    "Produtor -> Decompositor -> Consumidor primario",
-                    "Consumidor secundario -> Produtor -> Consumidor primario"
-                },
-                1,
-                "Images/Fase 02/Questao04"
-            ));
-
-            perguntas.Add(new Pergunta(
-                "Na imagem, a energia flui dos produtores para os herbivoros e depois para os carnivoros. Como a energia se move ao longo da cadeia alimentar?",
-                new string[] {
-                    "A energia aumenta conforme sobe nos niveis troficos",
-                    "A energia diminui conforme sobe nos niveis troficos",
-                    "A energia torna-se constante em todos os niveis troficos",
-                    "A energia apenas existe nos consumidores secundarios"
-                },
-                2,
-                "Images/Fase 02/Questao05"
-            ));
-
-            perguntas.Add(new Pergunta(
-                "Na imagem, os fungos que crescem ao lado de restos de animais e plantas. Em qual nivel trofico eles ocupam?",
+                "Na imagem, o cervo se alimenta de vegetacao. Qual o nivel trofico ocupado pelo cervo?",
                 new string[] {
                     "Consumidor primario",
                     "Consumidor secundario",
                     "Produtor",
                     "Decompositor"
                 },
-                4,
-                "Images/Fase 02/Questao06"
+                1,
+                "Images/Fase 02/Questao04"
             ));
 
             perguntas.Add(new Pergunta(
-                "Na cadeia alimentar apresentada, todos os organismos dependem de quem para obter energia inicialmente?",
+                "Na imagem, uma alcateia de lobos perseguem um cervo. Qual o nivel trofico ocupado pelos lobos?",
                 new string[] {
-                    "Consumidores primarios",
-                    "Consumidores secundarios",
-                    "Produtores",
-                    "Decompositores"
+                    "Consumidor primario",
+                    "Consumidor secundario",
+                    "Produtor",
+                    "Decompositor"
                 },
-                3,
-                "Images/Fase 02/Questao07"
+                2,
+                "Images/Fase 02/Questao05"
             ));
-        }
 
-        // Perguntas Fase 03 - Cadeias Alimentares
-        if (GameManager.Instance.faseAtual == Fase.Fase03)
-        {
+            perguntas.Add(new Pergunta(
+                "Na imagem, cogumelos crescem ao lado de um animal morto. Qual o nivel trofico ocupado pelos cogumelos?",
+                new string[] {
+                    "Produtor",
+                    "Decompositor",
+                    "Consumidor Secundario",
+                    "Consumidor Primario"
+                },
+                2,
+                "Images/Fase 02/Questao06"
+            ));
+
             perguntas.Add(new Pergunta(
                 "Qual a ordem correta dos organismos na cadeia alimentar da imagem?",
                 new string[] {
@@ -310,78 +292,94 @@ public class QuizManager : MonoBehaviour
                     "Produtor -> Decompositor -> Consumidor primario"
                 },
                 2,
+                "Images/Fase 02/Questao07"
+            ));
+        }
+
+        // Perguntas Fase 03 - Cadeias Alimentares
+        if (GameManager.Instance.faseAtual == Fase.Fase03)
+        {
+            perguntas.Add(new Pergunta(
+                "No ecossistema, a energia flui da grama para o coelho e, em seguida, para a raposa. Qual a funcao principal da grama nessa cadeia alimentar?",
+                new string[] {
+                    "Decompositor",
+                    "Consumidor primario",
+                    "Produtor",
+                    "Consumidor secundario"
+                },
+                3,
                 "Images/Fase 03/Questao01"
             ));
 
             perguntas.Add(new Pergunta(
-                "Na imagem, as plantas estao na base da cadeia alimentar. Qual o papel delas no ecossistema?",
+                "Qual seria o impacto na cadeia alimentar se todos os produtores, como a grama, fossem removidos do ecossistema?",
                 new string[] {
-                    "Elas fornecem energia diretamente aos consumidores secundarios",
-                    "Elas produzem energia por fotossintese, que sera utilizada por consumidores primarios",
-                    "Elas decompoem materia organica para liberar nutrientes",
-                    "Elas sao predadores que predam consumidores primarios"
+                    "Os consumidores primarios iriam aumentar",
+                    "Os decompositores iriam se tornar produtores",
+                    "Os consumidores primarios iriam morrer por falta de alimento",
+                    "Os consumidores secundarios passariam a se alimentar de decompositores"
                 },
-                2,
+                3,
                 "Images/Fase 03/Questao02"
             ));
 
             perguntas.Add(new Pergunta(
-                "Na imagem, o urso esta no topo da cadeia alimentar. O que isso significa?",
+                "Se a populacao de coelhos aumentasse significativamente, como isso afetaria as raposas?",
                 new string[] {
-                    "O urso se alimenta de todos os organismos da cadeia",
-                    "O urso depende apenas de decompositores para se alimentar",
-                    "O urso nao tem predadores naturais",
-                    "O urso nao esta relacionado a outras cadeias alimentares do ecossistema"
+                    "A populacao de raposas aumentaria devido ao maior acesso a alimento",
+                    "A populacao de raposas diminuiria devido a competicao com os coelhos",
+                    "As raposas se tornariam consumidores primarios",
+                    "A populacao de raposas permaneceria a mesma"
                 },
-                3,
+                1,
                 "Images/Fase 03/Questao03"
             ));
 
             perguntas.Add(new Pergunta(
-                "O que pode acontecer se o herbivoro da imagem for removido da cadeia alimentar?",
+                "Na cadeia alimentar, o coelho se alimenta de gramas, e o lobo se alimenta de coelhos. O que o lobo representa na cadeia alimentar?",
                 new string[] {
-                    "A populacao de plantas pode aumentar sem controle",
-                    "Os predadores terao mais presas disponiveis",
-                    "O ecossistema ficara equilibrado automaticamente",
-                    "Os consumidores secundarios se adaptarao sem problemas"
+                    "Produtor",
+                    "Consumidor primario",
+                    "Consumidor secundario",
+                    "Decompositor"
                 },
-                1,
+                3,
                 "Images/Fase 03/Questao04"
             ));
 
             perguntas.Add(new Pergunta(
-                "Se os produtores da imagem forem drasticamente reduzidos, como isso pode afetar a cadeia alimentar?",
+                "Se a populacao de decompositores, como cogumelos, diminuisse no ecossistema, qual seria a consequencia mais provavel?",
                 new string[] {
-                    "Aumenta a populacao de consumidores primarios",
-                    "Os consumidores secundarios serão diretamente afetados pela falta de presas",
-                    "A cadeia alimentar se adapta imediatamente",
-                    "Os decompositores tomam o lugar dos produtores"
+                    "O acumulo de materia organica morta aumentaria",
+                    "A populacao de consumidores primarios aumentaria",
+                    "Os produtores iriam se tornar decompositores",
+                    "Os consumidores secundarios iriam desaparecer"
                 },
-                2,
+                1,
                 "Images/Fase 03/Questao05"
             ));
 
             perguntas.Add(new Pergunta(
-                "Na imagem, o lobo esta como um consumidor secundario. O que isso significa em termos de cadeia alimentar?",
+                "Indique a ordem correta do fluxo de energia em uma cadeia alimentar simples que inclui grama, javali, e urso.",
                 new string[] {
-                    "Ele se alimenta diretamente de plantas",
-                    "Ele se alimenta de consumidores primarios, como herbivoros",
-                    "Ele se alimenta de decompositores no ecossistema",
-                    "Ele se alimenta de outros consumidores secundarios"
+                    "Produtor -> Consumidor secundario -> Consumidor primario",
+                    "Consumidor secundario -> Consumidor primario -> Produtor",
+                    "Produtor -> Consumidor primario -> Consumidor secundario",
+                    "Consumidor primario -> Produtor -> Consumidor secundario"
                 },
-                2,
+                3,
                 "Images/Fase 03/Questao06"
             ));
 
             perguntas.Add(new Pergunta(
-                "O que pode acontecer com a cadeia alimentar da imagem se os predadores desaparecerem?",
+                "Em um ecossistema equilibrado, o que aconteceria se o numero de predadores, como o lobo, aumentasse significativamente?",
                 new string[] {
-                    "A populacao de produtores aumenta drasticamente",
-                    "A populacao de consumidores primarios aumenta descontroladamente",
-                    "A populacao de consumidores secundarios aumenta",
-                    "A cadeia alimentar se reorganiza para o equilibrio imediato"
+                    "A populacao de consumidores primarios aumentaria",
+                    "A populacao de produtores aumentaria",
+                    "A populacao de consumidores secundarios diminuiria",
+                    "A populacao de consumidores primarios diminuiria"
                 },
-                2,
+                4,
                 "Images/Fase 03/Questao07"
             ));
         }

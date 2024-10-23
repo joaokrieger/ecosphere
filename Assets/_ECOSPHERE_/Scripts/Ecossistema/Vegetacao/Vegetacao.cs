@@ -31,9 +31,12 @@ public class Vegetacao : MonoBehaviour
 
     public void SpawnInicialGrama()
     {
-        for (int i = 0; i < spawnInicial; i++)
-        {
-            SpawnGrama();
+        int gramas = GameObject.FindGameObjectsWithTag("Grama").Length;
+        if (gramas < 10) {
+            for (int i = 0; i < spawnInicial; i++)
+            {
+                SpawnGrama();
+            }
         }
     }
 

@@ -32,4 +32,32 @@ public class SceneHandler : MonoBehaviour
             SceneManager.LoadScene("AvaliacaoEcologica");
         });
     }
+
+    public void NavegarParaMenuPrincipal()
+    {
+        fader.gameObject.SetActive(true);
+        LeanTween.alpha(fader, 0, 0);
+        LeanTween.alpha(fader, 1, 1f).setOnComplete(() => {
+            SceneManager.LoadScene("MenuPrincipal");
+        });
+    }
+
+    public void SalvarENavegarParaMenuPrincipal()
+    {
+        GameManager.Instance.SalvarJogo();
+        fader.gameObject.SetActive(true);
+        LeanTween.alpha(fader, 0, 0);
+        LeanTween.alpha(fader, 1, 1f).setOnComplete(() => {
+            SceneManager.LoadScene("MenuPrincipal");
+        });
+    }
+
+    public void NavegarParaSobreJogo()
+    {
+        fader.gameObject.SetActive(true);
+        LeanTween.alpha(fader, 0, 0);
+        LeanTween.alpha(fader, 1, 1f).setOnComplete(() => {
+            SceneManager.LoadScene("SobreJogo");
+        });
+    }
 }

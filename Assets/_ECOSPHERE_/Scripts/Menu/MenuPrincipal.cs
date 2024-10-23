@@ -28,7 +28,12 @@ public class MenuPrincipal : MonoBehaviour
 
     public void SobreJogo()
     {
+        sceneHandler.NavegarParaSobreJogo();
+    }
 
+    public void MenuPrincipalUI()
+    {
+        sceneHandler.NavegarParaMenuPrincipal();
     }
 
     public void SairDoJogo()
