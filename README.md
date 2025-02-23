@@ -56,3 +56,8 @@ The results obtained from the statistical analyses allowed the following conclus
 - For **Hypothesis H2**, there is insufficient evidence to claim that the game was effective as a reinforcement of the content covered in the class, leading to the non-rejection of this hypothesis;
 - For **Hypothesis H3**, it was found that the group that had the class before the game (GC) performed better than the GE, suggesting that prior content introduction favored the understanding of the topics explored in the game, which led to the rejection of Hypothesis H3;
 - **Hypothesis H4 was rejected**, showing that lessons incorporating innovative methodologies, such as the use of games, can effectively improve students' performance in acquiring knowledge.
+
+## Full Article PDF
+You can access the full article document in PDF format through the following link:
+
+- [Full article PDF](Assets/Docs/TCC___João_Eduardo_Krieger___EcoSphere__Um_Jogo_Sério_de_Simulação_de_Interações_Ecológicas_em_Ecossistemas.pdf)
